@@ -1,0 +1,342 @@
+{
+    "ign_wfs": {
+        "id": "ign_wfs",
+        "nom": "IGN Geoplateforme - WFS vecteur",
+        "fournisseur": "IGN",
+        "type_service": "WFS",
+        "url": "https://data.geopf.fr/wfs/ows",
+        "pertinence": "Cours d'eau (BD TOPO), routes, parcelles, batiments",
+        "statut": "ok",
+        "nb_couches": 818,
+        "erreur": null,
+        "duree_ms": 996,
+        "couches": {
+            "BDCARTO_V5:bassin_versant_topographique": {
+                "nom": "BDCARTO_V5:bassin_versant_topographique",
+                "titre": "BD CARTO Bassins versants topographiques",
+                "resume": "Bassins versants topographiques - BD CARTO V5 2025-09-15 ; edition 2025-09-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "topograph",
+                    "topo"
+                ]
+            },
+            "BDCARTO_V5:commune": {
+                "nom": "BDCARTO_V5:commune",
+                "titre": "BD CARTO Communes",
+                "resume": "Communes - BD CARTO V5 2025-09-15 ; edition 2025-09-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": false,
+                "mots_cles": []
+            },
+            "BDCARTO_V5:troncon_de_route": {
+                "nom": "BDCARTO_V5:troncon_de_route",
+                "titre": "BD CARTO troncon_de_route",
+                "resume": "Troncons de route - BD CARTO V5 2025-09-15 ; edition 2025-09-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": false,
+                "mots_cles": []
+            },
+            "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle": {
+                "nom": "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle",
+                "titre": "BDParcellaire vecteur (WFS)",
+                "resume": "BDParcellaire vecteur.",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": false,
+                "mots_cles": []
+            },
+            "BDTOPO_V3:bassin_versant_topographique": {
+                "nom": "BDTOPO_V3:bassin_versant_topographique",
+                "titre": "BDTOPO : Bassins versants topographiques",
+                "resume": "Bassins versants topographiques  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "topograph",
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "BDTOPO_V3:commune": {
+                "nom": "BDTOPO_V3:commune",
+                "titre": "BDTOPO : Communes",
+                "resume": "Communes  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "BDTOPO_V3:cours_d_eau": {
+                "nom": "BDTOPO_V3:cours_d_eau",
+                "titre": "BDTOPO : Cours d'eau",
+                "resume": "Cours d'eau  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "eau",
+                    "cours_d_eau",
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "BDTOPO_V3:detail_orographique": {
+                "nom": "BDTOPO_V3:detail_orographique",
+                "titre": "BDTOPO : Details orographiques",
+                "resume": "Details orographiques  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "BDTOPO_V3:noeud_hydrographique": {
+                "nom": "BDTOPO_V3:noeud_hydrographique",
+                "titre": "BDTOPO : Noeuds hydrographiques",
+                "resume": "Noeuds hydrographiques  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "hydrograph",
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "BDTOPO_V3:toponymie": {
+                "nom": "BDTOPO_V3:toponymie",
+                "titre": "BDTOPO : Toponymies",
+                "resume": "Toponymies  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "BDTOPO_V3:troncon_hydrographique": {
+                "nom": "BDTOPO_V3:troncon_hydrographique",
+                "titre": "BDTOPO : Troncons hydrographiques",
+                "resume": "Troncons hydrographiques  BDTOPO V3 2026-06-15",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::21781"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "hydrograph",
+                    "bdtopo",
+                    "topo"
+                ]
+            },
+            "LANDCOVER.CLC18_FR:clc18_fr": {
+                "nom": "LANDCOVER.CLC18_FR:clc18_fr",
+                "titre": "CORINE Land Cover - France metropolitaine - 2018",
+                "resume": "Inventaire biophysique de l'occupation des sols en 2018 en 44 postes. CORINE Land Cover est une base de donnees d  occupation des sols produite dans le cadre du programme europeen d  observation de la T",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::21781",
+                    "urn:ogc:def:crs:EPSG::23030"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "sol",
+                    "formation",
+                    "occupation"
+                ]
+            },
+            "INRA.CARTE.SOLS:geoportail_vf": {
+                "nom": "INRA.CARTE.SOLS:geoportail_vf",
+                "titre": "Cartes des sols",
+                "resume": "Identification des principaux types de sols ; edition 2024-12-01",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::5490",
+                    "urn:ogc:def:crs:EPSG::4967",
+                    "urn:ogc:def:crs:EPSG::21781",
+                    "urn:ogc:def:crs:EPSG::23030"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "sol"
+                ]
+            }
+        }
+    },
+    "ign_wms_r": {
+        "id": "ign_wms_r",
+        "nom": "IGN Geoplateforme  WMS raster",
+        "fournisseur": "IGN",
+        "type_service": "WMS",
+        "url": "https://data.geopf.fr/wms-r",
+        "pertinence": "MNT (altitude, pente), orthophotos, occupation des sols",
+        "statut": "ok",
+        "nb_couches": 444,
+        "erreur": null,
+        "duree_ms": 640,
+        "couches": {
+            "ELEVATION.CONTOUR.LINE": {
+                "nom": "ELEVATION.CONTOUR.LINE",
+                "titre": "Courbes de niveau",
+                "resume": "Le produit   Courbes de niveau   est un modele numerique de terrain sous forme de courbes de meme altitude, appelees aussi   isoplethes d  altitude  , ou plus techniquement   isohypses  . Ces courbes p",
+                "projections": [
+                    "IGNF:RGF93LAMB93",
+                    "EPSG:27583",
+                    "IGNF:RGF93CC46",
+                    "IGNF:LAMB1",
+                    "EPSG:27574"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "terrain",
+                    "eau",
+                    "altitude",
+                    "alti",
+                    "relief"
+                ]
+            }
+        }
+    },
+    "ign_wms_v": {
+        "id": "ign_wms_v",
+        "nom": "IGN Geoplateforme  WMS vecteur stylise",
+        "fournisseur": "IGN",
+        "type_service": "WMS",
+        "url": "https://data.geopf.fr/wms-v",
+        "pertinence": "BD TOPO stylisee, cartes administratives",
+        "statut": "ok",
+        "nb_couches": 462,
+        "erreur": null,
+        "duree_ms": 519,
+        "couches": {
+            "ELEVATION.CONTOUR.LINE": {
+                "nom": "ELEVATION.CONTOUR.LINE",
+                "titre": "Courbes de niveau",
+                "resume": "Le produit   Courbes de niveau   est un modele numerique de terrain sous forme de courbes de meme altitude, appelees aussi   isoplethes d  altitude  , ou plus techniquement   isohypses  . Ces courbes p",
+                "projections": [
+                    "EPSG:27583",
+                    "EPSG:27574",
+                    "EPSG:3949",
+                    "EPSG:21781",
+                    "EPSG:2981"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "terrain",
+                    "eau",
+                    "altitude",
+                    "alti",
+                    "relief"
+                ]
+            }
+        }
+    },
+    "brgm_geologie": {
+        "id": "brgm_geologie",
+        "nom": "BRGM  Geologie",
+        "fournisseur": "BRGM",
+        "type_service": "WFS",
+        "url": "https://geoservices.brgm.fr/geologie",
+        "pertinence": "Formations geologiques, failles, lithologie, BSS (forages)",
+        "statut": "ok",
+        "nb_couches": 40,
+        "erreur": null,
+        "duree_ms": 746,
+        "couches": {
+            "ms:SCAN_H_GEOL50_PERIMETRE": {
+                "nom": "ms:SCAN_H_GEOL50_PERIMETRE",
+                "titre": "Perimetre de la carte geologique 50 000e - harmonise",
+                "resume": "BD Charm-50 est la base de donnees georeferencee des cartes geologiques a 1/50 000e vectorisees et harmonisees. Elle comprend 6 couches de donnees numeriques vecteurs : formations geologiques, contour",
+                "projections": [
+                    "urn:ogc:def:crs:EPSG::4326",
+                    "urn:ogc:def:crs:EPSG::3857",
+                    "urn:ogc:def:crs:EPSG::4171",
+                    "urn:ogc:def:crs:EPSG::2154",
+                    "urn:ogc:def:crs:EPSG::4807"
+                ],
+                "pertinent": true,
+                "mots_cles": [
+                    "geologi",
+                    "formation"
+                ]
+            }
+        }
+    },
+    "geopf": {
+        "url": "https://data.geopf.fr/altimetrie/1.0/calcul/alti/rest/elevation.json",
+        "nom": "Data Geopf",
+        "couches": {
+            "altitude": {
+                
+            }
+        }
+    }
+
+}

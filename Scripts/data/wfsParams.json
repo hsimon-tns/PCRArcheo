@@ -1,0 +1,36 @@
+{
+    "Base": {
+        "SERVICE":      "WFS",
+        "VERSION":      "2.0.0",
+        "OUTPUTFORMAT": "application/json"
+    },
+    "Required" : {
+        "REQUEST":      "GetFeature",
+        "SRSNAME":      "EPSG:4326"
+    },
+    "Optional": {
+        "COUNT":        "10",
+        "BBOX":         "-90, -90, 90, 90, EPSG:4326",
+        "TYPENAMES":    ""
+    },
+    "Enums": {
+        "REQUEST": ["GetFeature", "DescribeFeatureType", "GetCapabilities"],
+        "TYPENAMES": [
+            "BDCARTO_V5:bassin_versant_topographique",
+            "BDCARTO_V5:commune",
+            "BDCARTO_V5:troncon_de_route",
+            "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle",
+            "BDTOPO_V3:bassin_versant_topographique",
+            "BDTOPO_V3:commune",
+            "BDTOPO_V3:cours_d_eau",
+            "BDTOPO_V3:detail_orographique",
+            "BDTOPO_V3:noeud_hydrographique",
+            "BDTOPO_V3:toponymie",
+            "BDTOPO_V3:troncon_hydrographique",
+            "LANDCOVER.CLC18_FR:clc18_fr",
+            "INRA.CARTE.SOLS:geoportail_vf",
+            "ELEVATION.CONTOUR.LINE",
+            "ms:SCAN_H_GEOL50_PERIMETRE"
+        ]
+    }
+}
