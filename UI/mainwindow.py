@@ -1,20 +1,27 @@
 # This Python file uses the following encoding: utf-8
+import os
+import re
 import sys
 import json
 import threads
-import os
 import requests
+from pprint import PrettyPrinter
+
+# ---- Qt Imports ---- #
+
 from PySide6.QtWidgets import \
     QWidget, QApplication, QMainWindow, QCheckBox, \
     QComboBox, QFormLayout, QSplitter, QLineEdit, \
-    QPushButton, QTextEdit, QGridLayout, \
-    QDoubleSpinBox, QSizePolicy, QVBoxLayout
+    QPushButton, QGridLayout, QDoubleSpinBox, QSizePolicy
 from PySide6.QtGui import \
-    QRegularExpressionValidator, QFontDatabase, QFontMetricsF, \
-    QColor, QKeyEvent
+    QRegularExpressionValidator, QColor
 from PySide6.QtCore import \
-    Qt, QRegularExpression, Slot, QObject, QEvent
-from typing import assert_type
+    Qt, QRegularExpression, Slot
+
+
+# ----Local Imports ---- #
+
+from terminal import Terminal
 
 def subDirs(dir: str):
     sys.path.append(dir)
@@ -27,6 +34,7 @@ def setRoot(dir: str):
     os.chdir(dir)
     subDirs(dir)
 
+global PROJECT_PATH
 PROJECT_PATH = os.path.abspath(__file__+"/../..")
 setRoot(PROJECT_PATH)
 
@@ -46,6 +54,7 @@ DELTA = 0.0001
 class Logger(object):
     def __init__(self):
         self.callbacks = []
+        self.printer = PrettyPrinter(depth=2)
 
     def register(self, callback):
         self.callbacks.append(callback)
@@ -55,6 +64,26 @@ class Logger(object):
             c(text)
 
 logger = Logger()
+
+DEBUG=True
+def log(message, level=0):
+    if DEBUG:
+        t = type(message)
+        if t is str:
+            print(message)
+        elif t is dict:
+            print(logger.printer.pformat(message))
+        elif hasattr(message, "__iter__"):
+            # List and analogs
+            if message:
+                tt = type(message[0])
+            else:
+                tt = ""
+            print(f"{t}[{tt}]:")
+            for i in message:
+                print(f"\t{i}")
+        else:
+            print(message)
 
 class CapaSelector(QWidget):
     def __init__(self, parent=None):
@@ -77,24 +106,24 @@ class CapaSelector(QWidget):
         self.form = QFormLayout()
         self.setLayout(self.form)
 
-        self.serversWidget = QComboBox()
+        self.serversWidget = QComboBox(objectName="Serveur")
         self.serversWidget.addItems(self.data.keys())
         self.form.addRow("Serveur", self.serversWidget)
-        self.serversRow = self.form.count() - 1
+        self.serversRow = self.form.rowCount() - 1
         self.serversWidget.setCurrentIndex(self.serversWidget.count()-1)
 
-        self.layerWidget = QComboBox()
+        self.layerWidget = QComboBox(objectName="Couche")
         self.form.addRow("Couche", self.layerWidget)
-        self.layerRow = self.form.count() - 1
+        self.layerRow = self.form.rowCount() - 1
 
-        self.projWidget = QComboBox()
+        self.projWidget = QComboBox(objectName="Projection")
         self.form.addRow("Projection", self.projWidget)
-        self.projRow = self.form.count() - 1
+        self.projRow = self.form.rowCount() - 1
 
         self.reqWidget = QComboBox()
         self.reqWidget.addItems(["GetCapabilities", "GetFeature", "DescribeFeatureType"])
         self.form.addRow("Request", self.reqWidget)
-        self.reqRow = self.form.count() - 1
+        self.reqRow = self.form.rowCount() - 1
 
         self.coordWidget = QLineEdit("-1.56157, 47.21954")
         self.coordsValidator = QRegularExpressionValidator(QRegularExpression(
@@ -102,11 +131,13 @@ class CapaSelector(QWidget):
         ))
         self.coordWidget.setValidator(self.coordsValidator)
         self.form.addRow("Coordinates", self.coordWidget)
-        self.coordRow = self.form.count() - 1
+        self.coordRow = self.form.rowCount() - 1
 
         self.sendWidget = QPushButton("Send request")
         self.form.addWidget(self.sendWidget)
-        self.sendRow = self.form.count() - 1
+        self.sendRow = self.form.rowCount() - 1
+
+        self.combos = [self.serversWidget, self.layerWidget, self.projWidget]
 
         self.spinner = WaitingSpinner(
                 self,
@@ -136,9 +167,7 @@ class CapaSelector(QWidget):
         self.projWidget.currentTextChanged.connect(self.onProjectionChanged)
         self.sendWidget.clicked.connect(self.onClicked)
 
-        self.onServerChanged(self.serversWidget.currentText())
-        self.onLayerChanged(self.layerWidget.currentText())
-        self.onProjectionChanged(self.projWidget.currentText())
+        self.serversWidget.setCurrentIndex(0)
         self.options = {}
 
         self.optionsFormat = {
@@ -146,10 +175,7 @@ class CapaSelector(QWidget):
             "bbox_size": (QDoubleSpinBox, 0.0001)
         }
 
-        self.dataFormat = {
-            ""
-        }
-
+        self.dataFormat = {}
         self.gridLayout = QGridLayout()
 
     def blockAll(self):
@@ -161,46 +187,61 @@ class CapaSelector(QWidget):
         self.serversWidget.blockSignals(False)
         self.layerWidget.blockSignals(False)
         self.projWidget.blockSignals(False)
+        self.updateVisibility()
+
+    def updateVisibility(self):
+        for w in self.combos:
+            count = w.count()
+            visible = (count > 0)
+            row = self.form.getWidgetPosition(w)[0]
+            self.form.setRowVisible(row, visible)
 
     def onServerChanged(self, text):
         self.blockAll()
-        print(f"Server changed : {text}")
+        log(f"Server changed : {text}")
         self.currentServerId = text
         self.currentServer = self.data.get(text, {})
-        self.layers = self.currentServer.get("couches", {})
+        self.layers = self.currentServer.get("layers", {})
         self.layerWidget.clear()
         self.layerWidget.addItems(self.layers.keys())
+        visible = self.layerWidget.count() > 0
+        self.form.setRowVisible(self.layerRow, visible)
+        self.onLayerChanged(self.layerWidget.currentText())
         self.unblockAll()
 
     def onLayerChanged(self, text):
         self.blockAll()
-        print(f"Layer changed : {text}")
+        log(f"Layer changed : {text}")
         self.currentLayer = self.layers[text]
         self.projections = self.currentLayer.get("projections", [])
         self.projWidget.clear()
         self.projWidget.addItems(self.projections)
+        visible = self.projWidget.count() > 0
+        self.form.setRowVisible(self.projRow, visible)
+        self.onProjectionChanged(self.projWidget.currentText())
         self.unblockAll()
 
     def onProjectionChanged(self, text):
+        log(f"Projection changed : {text}")
         self.currentProjection = text
 
     def sendRequest(self, node: threads.Node):
-        lat, lon = self.coordWidget.text().replace(" ", "").split(",")
-        lat = float(lat)
+        lon, lat = self.coordWidget.text().replace(" ", "").split(",")
         lon = float(lon)
+        lat = float(lat)
         # Traitement particulier pour la donnée d'altitude
         if self.currentServerId == "geopf":
-            params={"lon": lat, "lat": lon, 
+            params={"lon": lon, "lat": lat,
                 "resource": "ign_rge_alti_wld",
                 "zonly": "true"}
             url = self.currentServer["url"]
-            print(url)
+            log(url)
             ret = requests.get(url, params=params)
-            self.handleResponse(ret)
+            node.finished.emit(ret)
         else:
-            params = PARAMS
-            params["TYPENAMES"] = self.currentLayer["nom"]
-            params["SRSNAME"] = "EPSG:" + self.currentProjection.split("::")[1]
+            params = dict(PARAMS)
+            params["TYPENAMES"] = self.currentLayer["name"]
+            params["SRSNAME"] = utils.splitProjection(self.currentProjection)
             params["REQUEST"] = self.reqWidget.currentText()
 
             bbox = (lat-DELTA, lon-DELTA, lat+DELTA, lon+DELTA)
@@ -208,7 +249,7 @@ class CapaSelector(QWidget):
             bbox = ','.join(bbox)
             params["BBOX"] = bbox+","+params["SRSNAME"]
             ret = utils._get(self.currentServer.get("url", ""), params)
-            self.handleResponse(ret)
+            node.finished.emit(ret)
 
     def onClicked(self):
         self.threads.run(
@@ -223,108 +264,21 @@ class CapaSelector(QWidget):
         self.setEnabled(True)
         self.spinner.setVisible(False)
         if response is None:
-            print("Error: No response")
+            log("Error: No response")
         elif type(response) is requests.Response:
             if response.ok:
                 # Only for altitude so far
                 data = response.json()
                 alt = data.get("elevations", [None])[0]
-                print(f"Altitude : {alt}")
+                log(f"Altitude : {alt}")
             else:
-                print(f"Response not ok: {response.reason}")
+                log(f"Response not ok: {response.reason}")
         elif type(response) is dict:
-            print(response.items())
+            log(response)
         else:
-            print(f"Response of type {type(response)} is not handled")
+            log(f"Response of type {type(response)} is not handled")
 
-class CommandHistory(QObject):
-    def __init__(self):
-        super().__init__()
-        self.history = []
-        self.current = 0
 
-    def __len__(self):
-        return len(self.history)
-
-    def append(self, cmd: str):
-        self.history.append(cmd)
-
-    def reset(self):
-        self.current = len(self)
-
-    def up(self):
-        self.current = max(self.current - 1, 0)
-        if (len(self) > 0) and (self.current >= 0):
-            return self.history[self.current]
-        else:
-            return ""
-
-    def down(self):
-        self.current = min(self.current + 1, len(self))
-        if (len(self) > 0) and (self.current >= 0) and (self.current < len(self)):
-            return self.history[self.current]
-        else:
-            return ""
-
-class Terminal(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.history = CommandHistory()
-        self.savedEntry = ""
-
-        self.inputTerm = QLineEdit(placeholderText="custom commands (type help())")
-        self.form = QVBoxLayout()
-        self.setLayout(self.form)
-
-        font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
-        font.setPointSize(11)
-        metrics = QFontMetricsF(font)
-        self.textZone = QTextEdit(self)
-        self.textZone.setFont(font)
-        self.textZone.setTabStopDistance(4*metrics.horizontalAdvance(' '))
-        self.textZone.setReadOnly(True)
-        self.textZone.setAcceptRichText(True)
-        self.textZone.setAcceptRichText(True)
-
-        self.form.addWidget(self.textZone)
-        self.form.addWidget(self.inputTerm)
-
-        self.setupInput()
-
-    def setupInput(self):
-        self.inputTerm.returnPressed.connect(self.onInput)
-        self.inputTerm.installEventFilter(self)
-
-    def eventFilter(self, obj, event: QEvent):
-        if event.type() == QEvent.Type.KeyPress:
-            keyEvent = QKeyEvent(event)
-            if keyEvent.key() == Qt.Key.Key_Up:
-                # Save current command in progress
-                if self.history.current == len(self.history):
-                    self.savedEntry = self.inputTerm.text()
-                text = self.history.up()
-                self.inputTerm.setText(text)
-                event.accept()
-            elif keyEvent.key() == Qt.Key.Key_Down:
-                text = self.history.down()
-                if self.history.current == len(self.history):
-                    self.inputTerm.setText(self.savedEntry)
-                else:
-                    self.inputTerm.setText(text)
-                event.accept()
-
-        return super().eventFilter(obj,event)
-
-    def onInput(self):
-        command = self.inputTerm.text()
-        self.inputTerm.clear()
-        try:
-            exec(command)
-        except Exception as e:
-            print(f"Invalid command: {command}")
-        self.history.append(command)
-        self.history.reset()
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -333,7 +287,7 @@ class MainWindow(QMainWindow):
 
     def build(self):
         self.capaSelector = CapaSelector()
-        self.terminal = Terminal(self)
+        self.terminal = Terminal(globals() | locals(),self)
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
         self.splitter.addWidget(self.capaSelector)
         self.splitter.addWidget(self.terminal)

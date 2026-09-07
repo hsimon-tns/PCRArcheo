@@ -1,0 +1,32 @@
+{
+    "include" : {
+        "keywords": [
+                "pédologi", "type de sol", "occupation du sol", "nature du sol",
+                "géologi", "litho", "alluvion", "substrat",
+                "cours_d_eau", "hydrograph", "rivière", "fleuve", "nappe",
+                "plan_d_eau", "surface_hydrographique", "troncon_hydrographique",
+                "altitude", "mnt", "alti", "relief", "pente", "topograph",
+                "végétat", "forêt", "agricol", "occupation_du_sol", "landcover",
+                "cavité", "mouvement de terrain", "mvt", "érosion", "argile",
+                "bdtopo_v3:cours", "bdtopo_v3:surface_hydro", "bdtopo_v3:zone_de_veg",
+                "bdtopo_v3:troncon_hydro", "bdtopo_v3:plan_d_eau",
+                "inra.carte.sols", "landcover.clc", "ocsge",
+                "ms:litho", "ms:alearg", "ms:mvt", "ms:bss_eau", "ms:cavite"
+        ]
+    },
+    "exclude": {
+        "keywords": [
+                "BDTOPO_V3_DIFF:",
+                "IGNF_GEODESIE:",
+                "etude_",
+                "test_",
+                "DGF_",
+                "POTENTIEL.SOLAIRE",
+                "COMMUNES.EPCI",
+                "CONSERVATOIRE_LITTORAL",
+                "POI.",
+                "UTILITYANDGOVERNMENTAL",
+                "IRRADIATION"
+        ]
+    }
+}

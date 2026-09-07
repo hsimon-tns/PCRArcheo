@@ -1,0 +1,16 @@
+{
+    "id": "str",
+    "nom": "str",
+    "url": "str",
+    "nb_couches": "int",
+    "erreur": "any",
+    "duree_ms": "int",
+    "couches": {
+        "nom": "str",
+        "titre": "str",
+        "resume": "str",
+        "projections": "list[str]",
+        "pertinent": "bool",
+        "mots_cles": "list[str]"
+    }
+}

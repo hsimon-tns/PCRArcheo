@@ -1,24 +1,68 @@
 import re
 import math
-from typing import Optional
-import requests
 import time
-import xmltodict
 import json
+import requests
+import xmltodict
 from enum import StrEnum
+from typing import Optional
+from owslib.etree import etree
 from shapely.geometry import shape, Point as ShapelyPoint
 
-def checkKeys(data, keys):
-    dKeys = data.keys()
+def loadJson(path):
+
+    """Handles opening json file and returns data
+
+    Returns:
+        dict: loaded data
+    """
+
+    try:
+        with open(path) as f:
+            data = json.load(f)
+            return data
+    except FileNotFoundError as e:
+        return str(e)
+    except Exception as e:
+        exit(e)
+
+def checkKeys(data: dict, keys: list | tuple | set):
+
+    """ Checks that a given dictionary contains all given keys
+
+    Args:
+        data (dict): the dictionary to inspect
+        keys (list | tuple | set): keys to check in the given dictionary
+    Returns:
+        Returns a tuple, first indicates if all keys are found, second is the first missing if any, otherwise empty string
+    """
+    
     for k in keys:
-        if k not in dKeys:
+        if k not in data:
             return False, k
     return True, ""
 
-def checkCapaFormat(capa):
+def checkCapaFormat(capa: dict, format: dict):
+    """Checks the given capabilities data for its expected format
+
+    Args:
+        capa (dict): Capabilities data
+        format (dict): Capabilities format
+
+    Returns:
+        bool: Wether the given capabilities matches the expected format
+    """
+    return True, "" #TODO
+'''
     dType = type(capa)
     if dType != dict:
         return False, f"Capa type is {dType} (expected dict)"
+
+    for k, v in format.items():
+        if type(v) is str:
+            vType = locate(v)
+            if vType not in (int, str, tuple, list, set, dict):
+
 
     expKeys = ("date", "serveurs", "resume")
     found, missing = checkKeys(capa, expKeys)
@@ -39,6 +83,7 @@ def checkCapaFormat(capa):
     if not found:
         return found, f"Serveurs is missing key \"{missing}\""
     return True, ""
+'''
 
 BBOX_PATTERN = r"^\ *(((-)?\d{1,2}\.\d+\ *,\ *){3})((-)?\d{1,2}\.\d+)\ *$"
 BBOX_REGEXP = re.compile(BBOX_PATTERN)
@@ -50,15 +95,15 @@ def checkBBOX(emprise, coords):
             raise ValueError(
                 "String coordinates must be formated as : "
                 "lon,lat (as decimal arithmetical values)")
-        lat, lon = coords.replace(" ", "").split(",")
-        lat = float(lat)
+        lon, lat = coords.replace(" ", "").split(",")
         lon = float(lon)
+        lat = float(lat)
     elif hasattr(coords, '__iter__'):
         # Probably something like (lon, lat) or whatsoever
         if len(coords) != 2:
             raise ValueError(
                 "Coordinates iterable must have a length of 2")
-        lat, lon = coords
+        lon, lat = coords
     else:
         raise TypeError(f"Coordinates of type {type(coords)} is not supported")
     if type(emprise) is dict:
@@ -72,14 +117,12 @@ def checkBBOX(emprise, coords):
                 "min_lon,min_lat,max_lon,max_lat "
                 "(as decimal arithmetical values)")
         bbox = emprise.replace(" ", "").split(",")
-        print(f"bbox sqdqsfd = {bbox}")
     elif hasattr(emprise, "__iter__"):
         bbox = emprise
     bbox = [float(x) for x in bbox]
 
-    print(f"bbox={bbox}")
     min_x, min_y, max_x, max_y = bbox
-    return not (lat < min_x or lat > max_x or lon < min_y or lon > max_y)
+    return not (lon < min_x or lon > max_x or lat < min_y or lat > max_y)
 
 # ---------------------------------------------------------------------------
 # Constantes
@@ -95,33 +138,55 @@ RETRY_DELAY = 2
 MAX_RETRIES = 3
 BBOX_DEG    = 0.05   # rayon par défaut en degrés (~5km) pour intersection_bbox
 
+def splitProjection(p: str):
+    m = re.search("(EPSG)|(IGNF)", p)
+    if m:
+        return p[m.start():]
+    else:
+        return ""
+
+
 def feat_coords(feat: dict) -> tuple:
     return feat.get("geometry", {}).get("coordinates", [])
 
 def _get(url: str, params: dict) -> Optional[dict]:
-    """GET JSON avec retry silencieux."""
+    """GET JSON avec retry ; les echecs sont journalises sur stdout."""
     for attempt in range(MAX_RETRIES):
         try:
-            r = requests.get(url, params=params, timeout=TIMEOUT)
+            #r = requests.get(url, params=params, timeout=TIMEOUT)
+            r = requests.get("https://data.geopf.fr/wfs/ows?SERVICE=WFS&REQUEST=GETCAPABILITIES")
             r.raise_for_status()
-            j = r.json()
-            if not j:
-                s = xmltodict.parse(r.content)
-                j = json.dumps(s)
-            return j
-        except Exception:
+        except Exception as e:
+            print(f"_get({url}) tentative {attempt+1}/{MAX_RETRIES} echouee : "
+                  f"{type(e).__name__}: {e}")
             if attempt < MAX_RETRIES - 1:
                 time.sleep(RETRY_DELAY)
+    if r:
+        h = r.headers
+        fmt = h.get("content-type", "") + h.get("Content-Type", "")
+        if fmt.startswith("application/xml"):
+            #x = etree.fromstring(r.content)
+            j = xmltodict.parse(r.content)
+        elif fmt.startswith("text/xml"):
+            j = xmltodict.parse(r.content)
+        elif fmt == "application/json":
+            j = r.json()
+        else:
+            print(f"Not handled : {fmt}")
+            j = f"Not handled : {fmt}"
+        return j
     return None
 
 def getXMLasJSON(url: str, params: dict) -> Optional[dict]:
-    """GET JSON avec retry silencieux."""
+    """GET XML->dict avec retry ; les echecs sont journalises sur stdout."""
     for attempt in range(MAX_RETRIES):
         try:
             r = requests.get(url, params=params, timeout=TIMEOUT)
             r.raise_for_status()
             return xmltodict.parse(r.content)
-        except Exception:
+        except Exception as e:
+            print(f"getXMLasJSON({url}) tentative {attempt+1}/{MAX_RETRIES} echouee : "
+                  f"{type(e).__name__}: {e}")
             if attempt < MAX_RETRIES - 1:
                 time.sleep(RETRY_DELAY)
     return None
@@ -277,7 +342,9 @@ def _find_containing_feature(features: list, lon: float, lat: float) -> list:
             geom = shape(geom_json)
             if geom.contains(pt_shapely):
                 ret.append(feat)
-        except Exception:
+        except Exception as e:
+            print(f"_find_containing_feature: geometrie invalide ignoree : "
+                  f"{type(e).__name__}: {e}")
             continue
  
     # Aucun polygone ne contient exactement le point
@@ -326,9 +393,12 @@ def query_intersection_point(
 
     print(f"\nData ok ! ({len(features)} features)")
     print("\nTraitement des features...")
-    # Prendre la feature la plus proche
-    best = _find_containing_feature(features, lon, lat)
-    best = min(features, key=lambda f: _closest_point_distance(lon, lat, f))
+    # Feature contenant le point (pipeline bbox/rayon/Shapely), sinon la plus proche
+    contained = _find_containing_feature(features, lon, lat)
+    if contained:
+        best = contained[0]
+    else:
+        best = min(features, key=lambda f: _closest_point_distance(lon, lat, f))
     props = best.get("properties", {})
     coords = feat_coords(best)
 
@@ -384,7 +454,7 @@ def query_intersection_bbox(
         if d < best_dist:
             best_dist = d
             best_feat = feat
-            best_coord = feat_coords(d)
+            best_coord = feat_coords(feat)
 
     if best_feat is None:
         return empty
