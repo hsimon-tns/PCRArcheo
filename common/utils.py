@@ -151,14 +151,16 @@ def feat_coords(feat: dict) -> tuple:
 
 def _get(url: str, params: dict) -> Optional[dict]:
     """GET JSON avec retry ; les echecs sont journalises sur stdout."""
+    r = None
     for attempt in range(MAX_RETRIES):
         try:
-            #r = requests.get(url, params=params, timeout=TIMEOUT)
-            r = requests.get("https://data.geopf.fr/wfs/ows?SERVICE=WFS&REQUEST=GETCAPABILITIES")
+            r = requests.get(url, params=params, timeout=TIMEOUT)
             r.raise_for_status()
+            break
         except Exception as e:
             print(f"_get({url}) tentative {attempt+1}/{MAX_RETRIES} echouee : "
                   f"{type(e).__name__}: {e}")
+            r = None
             if attempt < MAX_RETRIES - 1:
                 time.sleep(RETRY_DELAY)
     if r:
@@ -169,7 +171,7 @@ def _get(url: str, params: dict) -> Optional[dict]:
             j = xmltodict.parse(r.content)
         elif fmt.startswith("text/xml"):
             j = xmltodict.parse(r.content)
-        elif fmt == "application/json":
+        elif fmt.startswith("application/json"):
             j = r.json()
         else:
             print(f"Not handled : {fmt}")

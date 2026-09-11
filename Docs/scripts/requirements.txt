@@ -4,3 +4,4 @@ xmltodict
 shapely
 sphinx
 pydoc
+qgmap

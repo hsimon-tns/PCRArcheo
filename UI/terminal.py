@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, QEvent, Qt
 from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton
-from PySide6.QtGui import QFontDatabase, QFontMetricsF, QKeyEvent
+from PySide6.QtGui import QFontDatabase, QFontMetricsF, QKeyEvent, QTextCursor
 
 
 class CommandHistory(QObject):
@@ -70,6 +70,17 @@ class Terminal(QWidget):
         self.form.addLayout(self.bottomZone)
 
         self.setupInput()
+
+    def appendRaw(self, text: str):
+        """Insere du texte brut en fin de zone, sans le saut de paragraphe
+        que QTextEdit.append() force a chaque appel : stdout ecrit le
+        texte puis son "\\n" de fin en deux write() separes, donc
+        append() y ajouterait une ligne vide entre chaque print()."""
+        cursor = self.textZone.textCursor()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        cursor.insertText(text)
+        self.textZone.setTextCursor(cursor)
+        self.textZone.ensureCursorVisible()
 
     def setupInput(self):
         self.inputTerm.returnPressed.connect(self.onInput)
