@@ -164,6 +164,7 @@ def _get(url: str, params: dict) -> Optional[dict]:
             if attempt < MAX_RETRIES - 1:
                 time.sleep(RETRY_DELAY)
     if r:
+        print(r.url)
         h = r.headers
         fmt = h.get("content-type", "") + h.get("Content-Type", "")
         if fmt.startswith("application/xml"):

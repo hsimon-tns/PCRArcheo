@@ -10,19 +10,20 @@ from pprint import PrettyPrinter
 # ---- Qt Imports ---- #
 
 from PySide6.QtWidgets import \
-    QWidget, QApplication, QMainWindow, QCheckBox, \
+    QWidget, QApplication, QMainWindow, QFrame, \
     QComboBox, QFormLayout, QSplitter, QLineEdit, \
     QPushButton, QGridLayout, QDoubleSpinBox, QSizePolicy, \
     QSpinBox, QLabel, QHBoxLayout, QAbstractSpinBox, QVBoxLayout
 from PySide6.QtGui import QColor
 from PySide6.QtCore import \
-    Qt, QRegularExpression, Slot
+    Qt, QRegularExpression, Slot, Signal
 
 
 # ----Local Imports ---- #
 
 from terminal import Terminal
 from mapviewer import MapViewer
+from dictview import DictionaryTreeWidget
 
 def subDirs(dir: str):
     sys.path.append(dir)
@@ -36,7 +37,13 @@ def setRoot(dir: str):
     subDirs(dir)
 
 global PROJECT_PATH
-PROJECT_PATH = os.path.abspath(__file__+"/../..")
+if getattr(sys, "frozen", False):
+    # PyInstaller extraction dir (bundled datas/ live here) instead of a
+    # __file__-relative path, which points into the frozen bundle's own
+    # internals rather than the original project layout.
+    PROJECT_PATH = sys._MEIPASS
+else:
+    PROJECT_PATH = os.path.abspath(__file__+"/../..")
 setRoot(PROJECT_PATH)
 
 import common.utils as utils
@@ -48,13 +55,13 @@ PARAMS = {
     "VERSION":      "2.0.0",
     "REQUEST":      "GetFeature",
     "OUTPUTFORMAT": "application/json",
-    "COUNT":        "10"
+    #"COUNT":        "10"
 }
 
 class Logger(object):
     def __init__(self):
         self.callbacks = []
-        self.printer = PrettyPrinter(depth=2)
+        self.printer = PrettyPrinter(depth=4)
 
     def register(self, callback):
         self.callbacks.append(callback)
@@ -110,6 +117,7 @@ def log(message, level=0):
 
 class CapaSelector(QWidget):
     SPINNER_RADIUS = 16
+    dataReceived = Signal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -177,7 +185,7 @@ class CapaSelector(QWidget):
         self.layerRow = self.form.rowCount() - 1
         self.projWidget = self.addForm("Projection", self.onProjectionChanged)
         self.projRow = self.form.rowCount() - 1
-        self.reqWidget = self.addForm("Request", None, ["GetCapabilities", "GetFeature", "DescribeFeatureType"])
+        self.reqWidget = self.addForm("Request", None, ["GetFeature", "GetCapabilities", "DescribeFeatureType"])
         self.reqRow = self.form.rowCount() - 1
 
         self.coordsLayout = QHBoxLayout()
@@ -216,6 +224,7 @@ class CapaSelector(QWidget):
         self.latwidget.valueChanged.connect(self.onCoordsChanged)
         self.lonwidget.valueChanged.connect(self.onCoordsChanged)
         self.bboxWidget.valueChanged.connect(self.onCoordsChanged)
+        self.map.mapMoved.connect(self.onMapMoved)
 
         self.combos = [self.serversWidget, self.layerWidget, self.projWidget]
 
@@ -277,7 +286,22 @@ class CapaSelector(QWidget):
         lat = self.latwidget.value()
         lon = self.lonwidget.value()
         delta = self.bboxWidget.value()
+        self.latwidget.setSingleStep(delta)
+        self.lonwidget.setSingleStep(delta)
         self.map.centerAt(lat, lon)
+        self.map.drawBBox((lat-delta, lon-delta, lat+delta, lon+delta))
+
+    def onMapMoved(self, lat, lon):
+        """Deplacement manuel de la carte (drag) : reporte le nouveau centre
+        sur les spinboxes sans redeclencher onCoordsChanged (qui recentrerait
+        la carte inutilement), puis redessine juste le rectangle a la suite."""
+        self.latwidget.blockSignals(True)
+        self.lonwidget.blockSignals(True)
+        self.latwidget.setValue(lat)
+        self.lonwidget.setValue(lon)
+        self.latwidget.blockSignals(False)
+        self.lonwidget.blockSignals(False)
+        delta = self.bboxWidget.value()
         self.map.drawBBox((lat-delta, lon-delta, lat+delta, lon+delta))
 
     def sendRequest(self, node: threads.Node):
@@ -301,7 +325,7 @@ class CapaSelector(QWidget):
             params["REQUEST"] = self.reqWidget.currentText()
 
             delta = self.bboxWidget.value()
-            bbox = (lat-delta, lon-delta, lat+delta, lon+delta)
+            bbox = (lon-delta, lat-delta, lon+delta, lat+delta)
             bbox = ['{0:.5g}'.format(b) for b in bbox]
             bbox = ','.join(bbox)
             params["BBOX"] = bbox+","+params["SRSNAME"]
@@ -321,6 +345,8 @@ class CapaSelector(QWidget):
     def handleResponse(self, response: object):
         self.setEnabled(True)
         self.spinner.setVisible(False)
+        lat = self.latwidget.value()
+        lon = self.lonwidget.value()
         if response is None:
             log("Error: No response")
         elif type(response) is requests.Response:
@@ -333,8 +359,21 @@ class CapaSelector(QWidget):
                 log(f"Response not ok: {response.reason}")
         elif type(response) is dict:
             self.printData(response)
+            self.dataReceived.emit(response)
+            # Edit map
+            self.map.clearGeometry()
+            feats = response.get("features", [])
+            if feats:
+                if feats[0].get('geometry', {}).get('type', '') == "Multipolygon":
+                    feats = utils._find_containing_feature(feats, lon, lat)
+            for f in feats:
+                g = f.get("geometry", {})
+                self.map.addGeometry(g, f.get("properties", {}).get(""))
         else:
             log(f"Response of type {type(response)} is not handled")
+
+    def findNameInFeature(self, feature):
+        lookup = ['graphie_du_toponyme', 'toponyme', 'nom_officiel', 'numero']
 
     def printData(self, data: dict):
         if 'wfs:WFS_Capabilities' in data.keys():
@@ -348,6 +387,7 @@ class CapaSelector(QWidget):
                 if kType == "xmlns":
                     log(f"{key} : {v}")
         else:
+            log("Features data")
             log(data)
 
 class MainWindow(QMainWindow):
@@ -362,9 +402,17 @@ class MainWindow(QMainWindow):
             "map": self.capaSelector.map
         }
         self.terminal = Terminal(globals() | locals() | context, self)
+        self.dictView = DictionaryTreeWidget({})
+        self.capaSelector.dataReceived.connect(self.dictView.load_dictionary)
+        self.capaSelector.dataReceived.connect(lambda d: self.terminal.addContext("response", d))
+        rightPanel = QSplitter(Qt.Orientation.Vertical)
+        rightPanel.setHandleWidth(10)
+        rightPanel.addWidget(self.dictView)
+        rightPanel.addWidget(self.terminal)
+
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
         self.splitter.addWidget(self.capaSelector)
-        self.splitter.addWidget(self.terminal)
+        self.splitter.addWidget(rightPanel)
         self.splitter.setChildrenCollapsible(False)
         self.splitter.setSizes(
             [self.capaSelector.minimumWidth(), self.terminal.maximumWidth()]

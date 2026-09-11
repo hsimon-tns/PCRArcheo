@@ -128,3 +128,6 @@ class Terminal(QWidget):
             print(f"{type(e).__name__}: {e}")
         self.history.append(command)
         self.history.reset()
+
+    def addContext(self, key, data):
+        self.execNamespace[key] = data

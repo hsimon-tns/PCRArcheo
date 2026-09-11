@@ -8,6 +8,10 @@ venv/
 # Sphinx build output (generated from Docs/scripts/source)
 Docs/scripts/build/
 
+# PyInstaller output (generated from archeo.spec)
+/build/
+/dist/
+
 # Editors / OS
 .vscode/
 .idea/
