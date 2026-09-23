@@ -3,7 +3,6 @@ import os
 import re
 import sys
 import json
-import threads
 import requests
 from pprint import PrettyPrinter
 
@@ -21,6 +20,7 @@ from PySide6.QtCore import \
 
 # ----Local Imports ---- #
 
+import threads
 from terminal import Terminal
 from mapviewer import MapViewer
 from dictview import DictionaryTreeWidget
@@ -330,7 +330,7 @@ class CapaSelector(QWidget):
             bbox = ','.join(bbox)
             params["BBOX"] = bbox+","+params["SRSNAME"]
             print(params["BBOX"])
-            ret = utils._get(self.currentServer.get("url", ""), params)
+            ret = utils.send_request(self.currentServer.get("url", ""), params)
             node.finished.emit(ret)
 
     def onClicked(self):
@@ -358,14 +358,14 @@ class CapaSelector(QWidget):
             else:
                 log(f"Response not ok: {response.reason}")
         elif type(response) is dict:
-            self.printData(response)
+            #self.printData(response)
             self.dataReceived.emit(response)
             # Edit map
             self.map.clearGeometry()
             feats = response.get("features", [])
             if feats:
                 if feats[0].get('geometry', {}).get('type', '') == "Multipolygon":
-                    feats = utils._find_containing_feature(feats, lon, lat)
+                    feats = utils.find_containing_feature(feats, lon, lat)
             for f in feats:
                 g = f.get("geometry", {})
                 self.map.addGeometry(g, f.get("properties", {}).get(""))

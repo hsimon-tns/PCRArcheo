@@ -89,7 +89,17 @@ BBOX_PATTERN = r"^\ *(((-)?\d{1,2}\.\d+\ *,\ *){3})((-)?\d{1,2}\.\d+)\ *$"
 BBOX_REGEXP = re.compile(BBOX_PATTERN)
 COORD_PATTERN = r"^\ *(((-)?\d{1,2}\.\d+\ *,\ *){1})((-)?\d{1,2}\.\d+)\ *$"
 COORD_REGEXP = re.compile(COORD_PATTERN)
-def checkBBOX(emprise, coords):
+def checkBBOX(area: any, coords) -> bool:
+    """Check that the given area contains the given point
+
+    Args:
+        area (any): A bouding box either in a string, iterable of dictionary format
+                    Note that, as dictionary, keys must be "min_lon", "min_lat", "max_lon" and "max_lat"
+        coords (any): GPS coordinates
+
+    Returns:
+        bool: Wether the coordinates are in bounds
+    """
     if type(coords) is str:
         if not COORD_REGEXP.match(coords):
             raise ValueError(
@@ -106,19 +116,21 @@ def checkBBOX(emprise, coords):
         lon, lat = coords
     else:
         raise TypeError(f"Coordinates of type {type(coords)} is not supported")
-    if type(emprise) is dict:
-        bbox = (
-            emprise["min_lon"], emprise["min_lat"],
-            emprise["max_lon"], emprise["max_lat"])
-    elif type(emprise) is str:
-        if not BBOX_REGEXP.match(emprise):
+    if type(area) is dict:
+        bbox = tuple(map(area.get, ["min_lon", "min_lat", "max_lon", "max_lat"], 4*[None]))
+        if None in bbox:
+            raise ValueError(
+                "String bbox must be formated as dict with keys: "
+                "min_lon,min_lat,max_lon,max_lat ")
+    elif type(area) is str:
+        if not BBOX_REGEXP.match(area):
             raise ValueError(
                 "String bbox must be formated as : "
                 "min_lon,min_lat,max_lon,max_lat "
                 "(as decimal arithmetical values)")
-        bbox = emprise.replace(" ", "").split(",")
-    elif hasattr(emprise, "__iter__"):
-        bbox = emprise
+        bbox = area.replace(" ", "").split(",")
+    elif hasattr(area, "__iter__"):
+        bbox = area
     bbox = [float(x) for x in bbox]
 
     min_x, min_y, max_x, max_y = bbox
@@ -138,7 +150,15 @@ RETRY_DELAY = 2
 MAX_RETRIES = 3
 BBOX_DEG    = 0.05   # rayon par défaut en degrés (~5km) pour intersection_bbox
 
-def splitProjection(p: str):
+def splitProjection(p: str) -> str:
+    """Get the OGC projection format from the capabilities projection format
+
+    Args:
+        p (str): input format
+
+    Returns:
+        str: output format
+    """
     m = re.search("(EPSG)|(IGNF)", p)
     if m:
         return p[m.start():]
@@ -149,16 +169,32 @@ def splitProjection(p: str):
 def feat_coords(feat: dict) -> tuple:
     return feat.get("geometry", {}).get("coordinates", [])
 
-def _get(url: str, params: dict) -> Optional[dict]:
-    """GET JSON avec retry ; les echecs sont journalises sur stdout."""
+def send_request(url: str, params: dict) -> dict:
+    """Send a OGC request
+
+    Args:
+        url (str): target server
+        params (dict): set of parameters
+
+    Returns:
+        dict: _description_
+    """
+    params = dict(params)
     r = None
     for attempt in range(MAX_RETRIES):
         try:
             r = requests.get(url, params=params, timeout=TIMEOUT)
+            if r.status_code == 400 and "OUTPUTFORMAT" in params \
+                    and b"permitted output format" in r.content:
+                # Certains serveurs (BRGM/MapServer) refusent OUTPUTFORMAT=json
+                # avec une erreur HTTP au lieu de retomber sur leur format par
+                # defaut : on retire le parametre et on retente (verifie en prod).
+                params.pop("OUTPUTFORMAT")
+                r = requests.get(url, params=params, timeout=TIMEOUT)
             r.raise_for_status()
             break
         except Exception as e:
-            print(f"_get({url}) tentative {attempt+1}/{MAX_RETRIES} echouee : "
+            print(f"get({url}) tentative {attempt+1}/{MAX_RETRIES} echouee : "
                   f"{type(e).__name__}: {e}")
             r = None
             if attempt < MAX_RETRIES - 1:
@@ -180,6 +216,19 @@ def _get(url: str, params: dict) -> Optional[dict]:
         return j
     return None
 
+def _has_features(data) -> bool:
+    """True si *data* est bien du GeoJSON (a une cle "features"), False sinon.
+
+    BRGM (MapServer) refuse OUTPUTFORMAT=json pour certaines couches ; apres
+    repli sur son format par defaut, send_request renvoie alors un dict GML
+    (xmltodict, ex. cle "wfs:FeatureCollection") que ce module ne sait pas
+    convertir en features exploitables. Sans ce garde-fou, `data.get("features", [])`
+    y renverrait silencieusement une liste vide, indiscernable d'un vrai
+    "0 resultat dans la zone" (verifie en prod sur ms:MVT_LOCALISE).
+    """
+    return isinstance(data, dict) and "features" in data
+
+
 def getXMLasJSON(url: str, params: dict) -> Optional[dict]:
     """GET XML->dict avec retry ; les echecs sont journalises sur stdout."""
     for attempt in range(MAX_RETRIES):
@@ -198,7 +247,7 @@ def getXMLasJSON(url: str, params: dict) -> Optional[dict]:
 # Calcul de distance
 # ---------------------------------------------------------------------------
 
-def _haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
+def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
     """Distance en km entre deux points WGS84."""
     R = 6371.0
     phi1, phi2 = math.radians(lat1), math.radians(lat2)
@@ -207,7 +256,7 @@ def _haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
     a = math.sin(dphi/2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlam/2)**2
     return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-def _closest_point_distance(lon: float, lat: float, feature: dict) -> float:
+def closest_point_distance(lon: float, lat: float, feature: dict) -> float:
     """
     Distance minimale entre (lon, lat) et tous les points d'une géométrie GeoJSON.
     Fonctionne pour Point, LineString, MultiLineString, Polygon, MultiPolygon.
@@ -228,13 +277,13 @@ def _closest_point_distance(lon: float, lat: float, feature: dict) -> float:
     points = flatten(coords)
     if not points:
         return float("inf")
-    return min(_haversine_km(lon, lat, pt[0], pt[1]) for pt in points)
+    return min(haversine_km(lon, lat, pt[0], pt[1]) for pt in points)
 
 # ---------------------------------------------------------------------------
 # Construction des paramètres WFS depuis une couche de couches_selection.json
 # ---------------------------------------------------------------------------
 
-def _build_wfs_params(
+def build_wfs_params(
     layer: dict,
     lon: float,
     lat: float,
@@ -255,8 +304,11 @@ def _build_wfs_params(
         PROPERTYNAME → layer["champs_cibles"] (colonnes à récupérer)
         COUNT        → nombre max de résultats
     """
-    # BBOX format WFS 2.0 : minLat,minLon,maxLat,maxLon,CRS
-    bbox = f"{lat-bbox_deg},{lon-bbox_deg},{lat+bbox_deg},{lon+bbox_deg},EPSG:4326"
+    # BBOX format WFS 2.0 : minLat,minLon,maxLat,maxLon,CRS. La forme courte
+    # "EPSG:4326" est lue lon,lat par l'IGN (GeoServer) mais lat,lon par le
+    # BRGM (MapServer) : avec l'ordre ci-dessus, l'IGN renvoie 0 entite. La
+    # forme URN est sans ambiguite et acceptee par les deux (verifie en prod).
+    bbox = f"{lat-bbox_deg},{lon-bbox_deg},{lat+bbox_deg},{lon+bbox_deg},urn:ogc:def:crs:EPSG::4326"
 
     params = {
         "SERVICE":      "WFS",
@@ -269,14 +321,14 @@ def _build_wfs_params(
         "COUNT":        str(count),
     }
 
-    # PROPERTYNAME : demander uniquement les champs utiles (allège la réponse)
-    champs = layer.get("champs_cibles", [])
-    if champs:
-        params["PROPERTYNAME"] = ",".join(champs)
+    # PROPERTYNAME est volontairement absent : le demander fait que le serveur
+    # renvoie les attributs SANS la geometrie, or les trois strategies de
+    # requete (point-in-polygon, distance, comptage) ont toutes besoin de la
+    # geometrie de chaque feature en plus de ses attributs (verifie en prod).
 
     return params
 
-def _find_containing_feature(features: list, lon: float, lat: float) -> list:
+def find_containing_feature(features: list, lon: float, lat: float) -> list:
     """
     Retourne la feature dont le polygone contient (lon, lat).
     En pratique retourne une liste mais on espère qu'elle ne contienne qu'un élément
@@ -327,10 +379,10 @@ def _find_containing_feature(features: list, lon: float, lat: float) -> list:
         # Centroïde approximatif = moyenne des sommets (assez précis pour un filtre)
         cx = sum(xs) / len(xs)
         cy = sum(ys) / len(ys)
-        dist_centroid = _haversine_km(lon, lat, cx, cy)
+        dist_centroid = haversine_km(lon, lat, cx, cy)
  
         # Rayon englobant = distance centroïde → sommet le plus éloigné
-        rayon_km = max(_haversine_km(cx, cy, x, y) for x, y in pts)
+        rayon_km = max(haversine_km(cx, cy, x, y) for x, y in pts)
  
         if dist_centroid > rayon_km * 1.05:
             # 5% de marge pour les approximations de centroïde
@@ -346,7 +398,7 @@ def _find_containing_feature(features: list, lon: float, lat: float) -> list:
             if geom.contains(pt_shapely):
                 ret.append(feat)
         except Exception as e:
-            print(f"_find_containing_feature: geometrie invalide ignoree : "
+            print(f"find_containing_feature: geometrie invalide ignoree : "
                   f"{type(e).__name__}: {e}")
             continue
  
@@ -372,9 +424,9 @@ def query_intersection_point(
     champs     = layer.get("champs_cibles", [])
     empty      = {covariable: None}, None
 
-    params = _build_wfs_params(layer, lon, lat, bbox_deg=0.01, count=5)
-    data   = _get(layer["url"], params)
-    if not data:
+    params = build_wfs_params(layer, lon, lat, bbox_deg=0.01, count=5)
+    data   = send_request(layer["url"], params)
+    if not _has_features(data):
         print("\tData was empty...")
         return empty
     print(f"\tReturned features : {data["numberReturned"]}")
@@ -383,9 +435,9 @@ def query_intersection_point(
     if not features:
         print("\tAugmentation du rayon de recherche")
         # Élargir le rayon si rien trouvé
-        params = _build_wfs_params(layer, lon, lat, bbox_deg=0.05, count=5)
-        data   = _get(layer["url"], params)
-        if not data:
+        params = build_wfs_params(layer, lon, lat, bbox_deg=0.05, count=5)
+        data   = send_request(layer["url"], params)
+        if not _has_features(data):
             print("\tData was empty...")
             return empty
         features = data.get("features", [])
@@ -397,11 +449,11 @@ def query_intersection_point(
     print(f"\nData ok ! ({len(features)} features)")
     print("\nTraitement des features...")
     # Feature contenant le point (pipeline bbox/rayon/Shapely), sinon la plus proche
-    contained = _find_containing_feature(features, lon, lat)
+    contained = find_containing_feature(features, lon, lat)
     if contained:
         best = contained[0]
     else:
-        best = min(features, key=lambda f: _closest_point_distance(lon, lat, f))
+        best = min(features, key=lambda f: closest_point_distance(lon, lat, f))
     props = best.get("properties", {})
     coords = feat_coords(best)
 
@@ -427,21 +479,22 @@ def query_intersection_bbox(
     """
     covariable = layer["covariable_cible"]
     champs     = layer.get("champs_cibles", [])
-    empty      = {covariable: None}, None
+    empty_values = {covariable: None}
     for c in champs:
-        empty[f"{covariable}__{c}"] = None
+        empty_values[f"{covariable}__{c}"] = None
+    empty = empty_values, None
 
-    params = _build_wfs_params(layer, lon, lat, bbox_deg=BBOX_DEG, count=10)
-    data   = _get(layer["url"], params)
-    if not data:
+    params = build_wfs_params(layer, lon, lat, bbox_deg=BBOX_DEG, count=10)
+    data   = send_request(layer["url"], params)
+    if not _has_features(data):
         return empty
 
     features = data.get("features", [])
     if not features:
         # Élargir à ~10km
-        params = _build_wfs_params(layer, lon, lat, bbox_deg=0.1, count=10)
-        data   = _get(layer["url"], params)
-        if not data:
+        params = build_wfs_params(layer, lon, lat, bbox_deg=0.1, count=10)
+        data   = send_request(layer["url"], params)
+        if not _has_features(data):
             return empty
         features = data.get("features", [])
 
@@ -453,7 +506,7 @@ def query_intersection_bbox(
     best_feat = None
     best_coord = []
     for feat in features:
-        d = _closest_point_distance(lon, lat, feat)
+        d = closest_point_distance(lon, lat, feat)
         if d < best_dist:
             best_dist = d
             best_feat = feat
@@ -482,12 +535,12 @@ def query_count_radius(
     rayon_m    = layer.get("rayon_m", 5000)
     rayon_deg  = rayon_m / 111_000  # approximation : 1° ≈ 111km
 
-    params = _build_wfs_params(layer, lon, lat, bbox_deg=rayon_deg, count=1000)
+    params = build_wfs_params(layer, lon, lat, bbox_deg=rayon_deg, count=1000)
     # Retirer PROPERTYNAME pour le comptage (on veut juste le nombre)
     params.pop("PROPERTYNAME", None)
 
-    data = _get(layer["url"], params)
-    if not data:
+    data = send_request(layer["url"], params)
+    if not _has_features(data):
         return {covariable: None}, None
 
     features = data.get("features", [])
@@ -496,7 +549,7 @@ def query_count_radius(
     rayon_km = rayon_m / 1000
     dans_rayon = [
         f for f in features
-        if _closest_point_distance(lon, lat, f) <= rayon_km
+        if closest_point_distance(lon, lat, f) <= rayon_km
     ]
 
     return {covariable: len(dans_rayon)}, []

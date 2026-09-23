@@ -12,6 +12,20 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
 sys.path.insert(0, PROJECT_ROOT)
 
+# Some UI/*.py modules import each other as bare top-level names
+# (e.g. dictview.py does "from node import Node"), relying on UI/ itself
+# being on sys.path rather than just the project root.
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'UI'))
+
+# autodoc_mock_imports (below) does not stop owslib from being genuinely
+# imported once real PySide6 is loaded in the same process (its shiboken
+# compatibility hook then inspects every subsequently imported module,
+# and crashes on owslib.wfs : "ValueError: wrapper loop when unwrapping").
+# Stub it out directly so its real code never executes during the build.
+from unittest.mock import MagicMock
+for _mod in ("owslib", "owslib.etree", "owslib.wfs", "owslib.wms"):
+    sys.modules.setdefault(_mod, MagicMock())
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 

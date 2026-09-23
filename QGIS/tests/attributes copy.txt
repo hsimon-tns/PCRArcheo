@@ -1,0 +1,412 @@
+IGN Geoplateforme - WFS vecteur
+
+	IGNF_GEODESIE:site-rbf : RBF
+	IGNF_GEODESIE:site-rdf : RDF
+
+    IGNF_BD-FRANCE-TOPO-VEGETATION:BD-FRANCE-TOPO-VEGETATION : Jeux tests de la BD France TOPO theme vegetation proposent une cartographie de la vegetation. Ils decrivent les grandes natures de vegetation et d occupation vegetalisee du sol, organisees selon une
+	
+    BDFORETV1_BDD_FXX_LAMB93_20140403:resu_bdv1_shape : BDForet V1 ; edition 2014-04-03
+
+	HYDROGRAPHY.BCAE.LATEST:bcae_cours_eau : Le code rural et de la peche maritime prevoit que les agriculteurs qui demandent des aides de la PAC implantent des bandes enherbees le long de certains cours d'eau au titre des bonnes conditions agri
+	
+    n_bassin_vie_zsup_068_zip_01-04-2026_wfs:n_bassin_vie_zsup_068 : Le bassin de vie est le plus petit territoire sur lequel les habitants ont acces aux equipements et services les plus courants.
+	
+	
+	GEOGRAPHICALGRIDSYSTEM.DFCI:carro_dfci_1x1_l93 : Carroyages DFCI 1x1 ; edition 2016-04-01
+	GEOGRAPHICALGRIDSYSTEM.DFCI:carro_dfci_2x2_l93 : Carroyages DFCI 2x2 ; edition 2016-04-01
+  
+    INRA.CARTE.SOLS:geoportail_vf : Identification des principaux types de sols ; edition 2024-12-01
+
+	wfs_du:municipality : Emprise communale, donnees issues du Geoportail de l'urbanisme
+	
+    IGNF_GEODESIE:triplet : TRIPLET
+	
+	STATISTICALUNITS.IRIS.PE:contours_iris_pe : Contours geometriques des IRIS de l'INSEE a petite echelle sur toute la France ; Edition : 2026-01-01
+	
+    HAIES.BOCAGES:haie : Des haies issues de la fusion du theme vegetation de la BD TOPO et des SNA du RPG ont deja ete diffusees dans la cadre de la BD TOPO v3 : voir le descriptif de contenu de la BD TOPO v3 : https://bit.l
+	
+    ELEVATION.CONTOUR.LINE:courbe : Le produit Courbes de niveau est un modele numerique de terrain sous forme de courbes de meme altitude, appelees aussi isoplethes d altitude , ou plus techniquement isohypses . Ces courbes p
+	
+    DGF_2025_:_voirie-retenue-departements : Longueur de voirie departementale retenue pour la repartition de la DGF des departements.
+	DGF_2025_:_voirie-retenue-communes : Longueur de voirie communale retenue dans le cadre de la repartition de la dotation de solidarite rurale (DSR)
+	
+    DGF_2026_:_voirie-retenue-departements : Longueur de voirie departementale retenue pour la repartition de la DGF des departements.
+	DGF_2026_:_voirie-retenue-communes : Longueur de voirie communale retenue dans le cadre de la repartition de la dotation de solidarite rurale (DSR)
+	
+    BAN.DATA.GOUV:ban : BAN edition 2026-07-27
+	
+	UTILIYANDGOVERNMENTALSERVICES.IGN.POI.GARES:gares : Les gares permettent le debarquement et l'embarquement de passagers dans des trains ou des autocars. Les gares peuvent avoir plusieurs acces donnant dans differentes voiries. On inclut egalement les g
+
+	GARES_BDD_FXX_WM_20171227:gares : Les gares permettent le debarquement et l'embarquement de passagers dans des trains ou des autocars. Les gares peuvent avoir plusieurs acces donnant dans differentes voiries. On inclut egalement les g
+	
+
+    GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25.GRAPHE-MOSAIQUAGE:graphe_scan25 : Le graphe de mosaiquage du produit SCAN25 fournit le zonage utilise pour la mise a jour des donnees SCAN25 ainsi que differentes metadonnees.
+	
+    wfs_du:habillage_lin : Objet lineaire indicatif porte sur le document d'urbanisme pour l'habillage du plan, donnees issues du Geoportail de l'urbanisme
+	wfs_du:habillage_pct : Objet ponctuel indicatif porte sur le document d'urbanisme pour l'habillage du plan, donnees issues du Geoportail de l'urbanisme
+	wfs_du:habillage_surf : Objet surfacique indicatif porte sur le document d'urbanisme pour l'habillage du plan, donnees issues du Geoportail de l'urbanisme
+	wfs_du:info_lin : Perimetre lineaire a reporter a titre d information, donnees issues du Geoportail de l'urbanisme
+	wfs_du:info_pct : Perimetre ponctuel a reporter a titre d information, donnees issues du Geoportail de l'urbanisme
+	wfs_du:info_surf : Perimetre surfacique a reporter a titre d information, donnees issues du Geoportail de l'urbanisme
+	
+    INPE:inpe : Inventaire national des plans d'eau ; edition 2023-09-01
+	
+    monterritoire_gpkg_29-07-2025_wfs:forets_de_mon_territoire : La France presente des forets tres differentes selon les territoires.
+	
+	IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES:masque-foret_2004 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+        ---
+    IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES:masque-foret_2023 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+    IGNF_MASQUE-FORET.2021-2023:masque_foret : Le Masque Foret V1 permet de localiser les surfaces de foret presentes en France metropolitaine. Il contient egalement une information sur l usage des forets ; edition 2023-01-01
+	
+    ELEVATIONGRIDCOVERAGE.HIGHRES.QUALITY:source_fra : Informations sur la precision du RGEAlti.
+	
+    MTE_MASSE-EAU:_surface_bassins-versants : Masse d eau de surface bassin versant. Cartographie des masses d eau de surface selon les bassins versants.
+	MTE_MASSE-EAU:_surface_canal : Masse d eau de surface canal. Cartographie des masses d eau de surface en canal.
+	MTE_MASSE-EAU:_souterraine : Masse d eau souterraine. Cartographie des masses d eau souterraine.
+	
+    MasseEauTransition972_wfs:masseeautransition972 massedeautransition_20152021 : masseeautransition972 massedeautransition_20152021
+	
+    IGNF_LIDAR-HD_METADONNEE:metadata : Metadonnee LiDAR HD ; edition 2026-04-13
+	
+    
+    IGNF_RPG_PARCELLES-AGRICOLES-CATEGORISEES_2024:parcelles_agricole_categorisees_2024 : Registre parcellaire graphique : couche representant les types de couverture des sols des parcelles agricoles declarees au RPG par les exploitants edition 2024
+	
+    wfs_scot:perimetre_scot : Perimetre publie du Schema de Coherence Territorial, donnees issues du Geoportail de l'urbanisme
+	
+	GEODESIE:data_geod : Points pour le serveur de donnees
+	
+    IGNF_RPG_PRAIRIES-PERMANENTES_2024:prairies_permanentes_2024 : Les PRAIRIES PERMANENTES correspondent a toute surface sur laquelle la production d'herbe ou d'autres plantes fourrageres herbacees, predomine depuis 5 ans revolus ou plus (6eme declaration PAC ou plu
+	
+    TOURBIERES_ZONES-HUMIDES.BCAE:bcae : Dans le cadre d'une convention avec le MASAF, la norme BCAE 2 relative a la conditionnalite de la Politique Agricole Commune a pour objet de proteger les zones humides et des tourbieres et entrera en 
+	
+	
+	RPG.2010:rpg_2010 : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2010 ; edition 2010-01-01
+        ---
+    RPG.2014:rpg_2014 : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2014 ; edition 2014-01-01
+	
+    RPG.2015:parcelles_graphiques : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2015 ; edition 2015-01-01
+        ---
+	RPG.2024:parcelles_graphiques : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2024 ; edition 2024-01-01
+	
+    RPG.2022:codes_cultures : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2022 ; edition 2022-01-01
+    RPG.2023:codes_cultures : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2023 ; edition 2023-01-01
+    RPG.2024:codes_cultures : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2024 ; edition 2024-01-01
+	
+    RPG.2023:ilots_de_reference : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2023 ; edition 2023-01-01
+	
+	RPG.2024:ilots_anonymes : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2024 ; edition 2024-01-01
+	
+    RPG.LATEST:codes_cultures : Registre parcellaire graphique : zones de cultures declarees par les exploitants ; edition 2024-01-01
+	RPG.LATEST:parcelles_graphiques : Registre parcellaire graphique : zones de cultures declarees par les exploitants ; edition 2024-01-01
+	RPG.LATEST:ilots_anonymes : Registre parcellaire graphique : zones de cultures declarees par les exploitants ; edition 2024-01-01
+	
+    l_rgc_l_008_20-02-2026_wfs:l_rgc_l_008 : Troncons issus de la BD Topo du reseau des routes a grande circulation pour un usage departemental
+	
+    ObsForets.Sols:repartition_niveaux_trophiques_2018_2022 : Repartition des niveaux trophiques en foret. Millesime 2018-2022. Source: IGN-Inventaire forestier.
+	ObsForets.Sols:repartition_niveaux_trophiques_toutes_campagnes : Repartition des niveaux trophiques en foret, toutes campagnes. Source: IGN-Inventaire forestier.
+	
+	
+    paec_bfc_2026:Territoires_paec_bfc_2026 : Type de mesure et type de MAEC pour les territoires PAEC en BFC, campagne 2026
+	
+    etude_25145_15-07-2026_wfs:geometrie_ucs : unites cartographiques correspondant a des pedopaysages decrits dans la base de donnee Donesol via l'attribut NO_UCS
+	
+    TRACES.RANDO.HIVERNALE:traces_rando_hivernale : Trace de randonnee hivernale (a ski, a raquette) ; edition 2025-12-10
+	
+	ObsForets.Ressources:volume_moyen_ha_dep_2018_2022 : Volume moyen dans un hectare de foret du departement (Volume bois fort tige des arbres vivants). Millesime 2018-2022. Source: IGN-Inventaire forestier.
+	ObsForets.Ressources:volume_sur_pied_dep_2017_2021 : Volume de bois vivant par departement. Millesime 2017-2021. Source: IGN-Inventaire forestier.
+	ObsForets.Ressources:volume_sur_pied_region_2017_2021 : Volume de bois vivant par region. Millesime 2017-2021. Source: IGN-Inventaire forestier.
+	
+    wfs_du:zone_urba : Zonage du document d'urbanisme, donnees issues du Geoportail de l'urbanisme Source : DEAL 972
+	
+    IGNF_RPG_ZONES-DENSITE-HOMOGENE_2024:surfaces_2024_zdh_20250621 : Registre parcellaire graphique : Zones de densite homogenes sur laquelle la vegetation et les autres elements naturels non agricoles (affleurements rocheux, zones de sol nu) apparaissent homogenes lo
+	
+    zppa_cvl_executoire_2025_gpkg_06-03-2026_wfs:zppa_cvl_executoire_2025 : Une Zone de Presomption de Prescription Archeologique (ZPPA) correspond a un perimetre etabli par l etat au sein duquel la presence de vestiges archeologiques est presumee. Les projets de travaux ou d
+	
+    pva:dataset : Ensemble des missions de prises de vue aeriennes IGN scannees ou numeriques
+	
+    GRAPHE.PCRS.ANCT:graphe_pcrs_anct : Graphe PCRS ANCT
+	
+    pva:image : Ensemble des images des missions de prises de vue aeriennes IGN
+	
+IGN Geoplateforme WMS raster
+	ADEME_EPCI_lineaire-haie-a-stock : ADEME EPCI lineaire haie a stock
+	ADEME_EPCI_lineaire-haie-total : ADEME EPCI lineaire haie total
+	ADEME_EPCI_volume-bois-de-haie-sur-pied : ADEME EPCI volume bois de haie sur pied
+	ADEME_KM2_lineaire-haie-a-stock : ADEME KM2 lineaire haie a stock
+	ADEME_KM2_lineaire-haie-total : ADEME KM2 lineaire haie total
+	ADEME_KM2_volume-bois-de-haie-sur-pied : ADEME KM2 volume bois de haie sur pied
+	
+    AN-IGNF_GEOGRAPHICALGRIDSYSTEMS.CASSINI : Planches numerisees colorisees de la carte de Cassini detenue par la BNF
+	
+    Aire-Parcellaire : Selon les reglements europeens n 110/2008 du 15 janvier 2008, n 1151/2012 du 21 novembre 2012 et n 1308/2013 de l OCM , le cahier des charges des appellations definit l aire geographique. Le terme de 
+	
+    BNF-IGNF_GEOGRAPHICALGRIDSYSTEMS.CASSINI : Planches numerisees colorisees de la carte de Cassini detenue par la BNF
+	
+	CP.CadastralParcel : Parcelles cadastrales.
+
+	DEBROUSSAILLEMENT : Zonage informatif des obligations legales de debroussaillement, Edition : 2026-01-01
+
+	DREAL.ZONAGE_PINEL : La reduction d'impot Pinel (code general des impots) s'applique a l investissement locatif realise dans les zones ou la tension entre l'offre et la demande de logements est la plus forte. La loi 
+
+	EL.GridCoverage : La couche altitude se compose d'un MNT (Modele Numerique de Terrain) affiche en teintes hypsometriques et issu de la BD ALTI.
+
+
+	GEOGRAPHICALGRIDSYSTEM.DFCI : Le carroyage DFCI est un systeme de maillage geographique utilise en France par les acteurs de la Defense des Forets Contre les Incendies (DFCI). Le territoire metropolitain est couvert par des ca
+	GEOGRAPHICALGRIDSYSTEMS.COASTALMAPS : Le produit SCAN Littoral version 1 est une collection d'images cartographiques numeriques continues du littoral en couleur, obtenue par assemblage georeference et dalle des donnees raster des cartes 
+	GEOGRAPHICALGRIDSYSTEMS.ETATMAJOR10 : Carte des environs de Paris au 1 : 10 000 etablie entre 1818 et 1824.
+	GEOGRAPHICALGRIDSYSTEMS.ETATMAJOR40 : Carte francaise en couleurs du XIXe siecle en couleurs superposable aux cartes et donnees modernes.
+	GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2 : Cartographie multi-echelles sur le territoire national, issue des bases de donnees vecteur de l IGN, mis a jour regulierement et realisee selon un processus entierement automatise.
+	GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN : Carte des zones ayant une valeur de pente superieure a 30 -35 -40 -45 d'apres la BD ALTI au pas de 5m
+	GEOGRAPHICALGRIDSYSTEMS.SLOPES.PAC : Carte des zones ayant une valeur de pente superieure a 10% - source : RGEALTI 2017 au pas de 5m - disponible jusqu'au 1/17062 - metropole uniquement - mise a jour le 12/10/2017
+
+
+	HYDROGRAPHY.BCAE.2025 : Le code rural et de la peche maritime prevoit que les agriculteurs qui demandent des aides de la PAC implantent des bandes enherbees le long de certains cours d eau au titre des bonnes conditions agri
+	HYDROGRAPHY.BCAE.2026 : Le code rural et de la peche maritime prevoit que les agriculteurs qui demandent des aides de la PAC implantent des bandes enherbees le long de certains cours d eau au titre des bonnes conditions agri
+	HYDROGRAPHY.BCAE.LATEST : Le code rural et de la peche maritime prevoit que les agriculteurs qui demandent des aides de la PAC implantent des bandes enherbees le long de certains cours d'eau au titre des bonnes conditions agri
+
+	IGNF_ACCESSIBILITE-PHYSIQUE-FORETS-PORTEUR : Ce jeu de donnees presente une cartographie de l accessibilite physique des forets aux engins d exploitation PORTEUR, produite par l IGN a partir de la methodologie developpee dans le cadre du projet 
+	IGNF_ACCESSIBILITE-PHYSIQUE-FORETS-PORTEUR-MASQUE-FORETV3 : Ce jeu de donnees calcule avec le masque Foret v3, presente une cartographie de l accessibilite physique des forets aux engins d exploitation PORTEUR, produite par l IGN a partir de la methodologie de
+	IGNF_ACCESSIBILITE-PHYSIQUE-FORETS-SKIDDER : Ce jeu de donnees presente une cartographie de l accessibilite physique des forets aux engins d exploitation SKIDDER, produite par l IGN a partir de la methodologie developpee dans le cadre du projet 
+	IGNF_ACCESSIBILITE-PHYSIQUE-FORETS-SKIDDER-MASQUE-FORETV3 : Ce jeu de donnees calcule avec le masque Foret v3, presente une cartographie de l accessibilite physique des forets aux engins d exploitation SKIDDER, produite par l IGN a partir de la methodologie de
+	
+    IGNF_BD-FRANCE-TOPO-VEGETATION : Jeux tests de la BD France TOPO theme vegetation proposent une cartographie de la vegetation. Ils decrivent les grandes natures de vegetation et d occupation vegetalisee du sol, organisees selon une
+	IGNF_BUILDINGS.BUILDINGS : Batiments ; edition 2026-06-15
+
+	IGNF_COSIA_2017-2020 : COSIA 2017-2020
+	IGNF_COSIA_2021-2023 : COSIA 2021-2023
+	IGNF_COSIA_2024-2026 : COSIA 2024-2025
+
+	IGNF_FORETS-ANCIENNES : Une foret est ancienne si l usage du sol est forestier depuis au moins le milieu du XIXeme siecle. Les donnees sont issues du croisement BD CARTO EM et BD Foret V2.
+	
+    IGNF_GEOGRAPHICNAMES.NAMES : Noms ; edition 2026-06-15
+	
+    IGNF_HYDROGRAPHY.HYDROGRAPHY : Hydrographie ; edition 2026-06-15
+	
+	IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES_2004 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+	IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES_2016 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+	IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES_2017 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+	IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES_2022 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+	IGNF_MASQUE-CARTO-FORMATIONS-VEGETALES_2023 : La donnee masque foret est deduite de la cartographie des vegetations en prenant en compte uniquement les peuplements forestiers, sans en preciser la composition.
+	
+    IGNF_MASQUE-FORET.2021-2023 : Le Masque Foret V1 permet de localiser les surfaces de foret presentes en France metropolitaine. Il contient egalement une information sur l usage des forets.
+	IGNF_NATURE-EN-VILLE_2021-2023 : Base de donnees nationale cartographiant les surfaces vegetalisees et surfaces d eau en contexte urbain. Creee par croisement de CoSIA et du RPG. Couvre les communes urbaines denses et intermediaires 
+	
+	
+    IGNF_RPG_PARCELLES-AGRICOLES-CATEGORISEES_2024 : Registre parcellaire graphique : couche representant les types de couverture des sols des parcelles agricoles declarees au RPG par les exploitants edition 2024
+	IGNF_RPG_PARCELLES-ELIGIBLES-IAE_2024 : Cette couche recense les parcelles eligibles aux Infrastructures Agroecologiques (IEA) que ce soit au titre de l ecoregime ou pour la BCAE8
+	
+    IGNF_RPG_PRAIRIES-PERMANENTES_2024 : Les PRAIRIES PERMANENTES correspondent a toute surface sur laquelle la production d'herbe ou d'autres plantes fourrageres herbacees, predomine depuis 5 ans revolus ou plus (6eme declaration PAC ou plu
+	
+    IGNF_RPG_ZONES-DENSITE-HOMOGENE_2024 : Registre parcellaire graphique : Zones de densite homogenes sur laquelle la vegetation et les autres elements naturels non agricoles (affleurements rocheux, zones de sol nu) apparaissent homogenes lo
+	
+    INRA.CARTE.SOLS : Identification des principaux types de sols.
+	
+    INSEE.FILOSOFI.POPULATION : Nombre d'individus par km2
+	
+    IRRADIATION.SOLAIRE : Cette couche represente les valeurs annuelles horizontales moyennes (ie "recues sur une surface horizontale") d'irradiation solaire exprimees en kWh/m2. Les donnees sont issues de Solargis et calculee
+	
+    LANDUSE.AGRICULTURE.LATEST : Registre parcellaire graphique : zones de cultures declarees par les exploitants edition 2024
+        ---
+	LANDUSE.AGRICULTURE2007 : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2007.
+	
+    MGP_AFFICHAGE : Affichage
+	MGP_AFFICHAGE3 : Affichage
+	MGP_AFFICHAGE4 : Affichage
+
+	MTE_MASSE-EAU-SOUTERRAINE : Masse d eau souterraine. Cartographie des masses d eau souterraine.
+	MTE_MASSE-EAU-SURFACE_BASSIN-VERSANT : Masse d eau de surface bassin versant. Cartographie des masses d eau de surface selon les bassins versants.
+	MTE_MASSE-EAU-SURFACE_CANAL : Masse d eau de surface canal. Cartographie des masses d eau de surface en canal.
+	
+    OCSGE-ARTIFICIALISATION-EXEMPTIONS_2016-2017 : Couche des surfaces artificialisees calculees a partir de l'OCS GE, prenant en compte les exemptions des parcs et jardins publics et des parcs photovoltaiques.
+        ---
+    OCSGE-ARTIFICIALISATION-EXEMPTIONS_2021-2023 : Couche des surfaces artificialisees calculees a partir de l'OCS GE, prenant en compte les exemptions des parcs et jardins publics et des parcs photovoltaiques.
+	
+    OI.OrthoimageCoverage : Le produit BD ORTHO V3 est une collection de mosaiques d'orthophotographies numeriques en couleurs ou en Infra Rouge couleurs, rectifiees dans la projection adaptee au territoire couvert. La BD ORTHO
+	OI.OrthoimageCoverage.HR : Le produit BD ORTHO V3 est une collection de mosaiques d'orthophotographies numeriques en couleurs ou en Infra Rouge couleurs, rectifiees dans la projection adaptee au territoire couvert. La BD ORTHO
+
+	PCRS86_maj2026_ensemble : PCRS86 maj2026 - fusion - jpg2000 compression80
+
+	PCRS_SDE35 : Donnees du PCRS SDE35
+
+	PLANIGN.LIDAR.SURSOL : Plan IGN Lidar Sursol
+
+	PLANIGN.LIDAR.TERRAIN : Plan IGN Lidar Terrain
+
+	PRAIRIES.SENSIBLES.BCAE : Preservation des prairies et paturages permanents en zone Natura 2000 - Couche pour la nouvelle PAC produite par l Observatoire du developpement rural (ODR) en lien avec l INRAE.
+	
+    RAPIDEYE_PYR-JPEG_WLD_WM_ESPACE-PRO : Image satellitaire de la France metropolitaine effectuee en 2010 par les satellites de teledetection RapidEye dans le cadre du projet EQUIPEX GEOSUD.
+	RAPIDEYE_PYR-JPEG_WLD_WM_WMS : Image satellitaire de la France metropolitaine effectuee en 2010 par les satellites de teledetection RapidEye dans le cadre du projet EQUIPEX GEOSUD.
+	
+    RGEALTI-DST_PYR-ZIP_FXX_LAMB93_WMS : Masque de distance RGEALTI
+	RGEALTI-MNT_PYR-ZIP_FXX_LAMB93_WMS : MNT RGEALTI
+	RGEALTI-SRC_PYR-ZIP_FXX_LAMB93_WMS : Masque de source RGEALTI
+	RGEALTI-SRC_PYR-ZIP_SMA_WGS84UTM20_WMS : SRC RASTER SMA
+	
+    SCAN1000_PYR-JPEG_WLD_WM : Le produit SCAN 1000 version 2 est une collection d'images numeriques en couleurs, obtenues par rasterisation des donnees vecteur de la carte nationale France (901) a l'echelle 1 :1,000,000ieme. Le p
+	
+    SCANEM40_PYR_PNG_FXX_LAMB93 : Le produit SCAN Etat-major 40K est une collection d'images cartographiques numeriques en couleurs, obtenues par scannage et assemblage georeference des cartes d'Etat-major au 1 : 40 000. Le produit S
+	
+    SCANREG_PYR-JPEG_WLD_WM : Le produit SCAN Regional version 2 est une collection d'images cartographiques numeriques en couleur, obtenues par rasterisation des donnees vecteur de la serie Cartes regionales editees par l'IG
+	
+	SYDESL_ORTHO_71_WMS : SYDESL Orthophotographie 5cm 71
+
+	TOURBIERES_ZONES-HUMIDES.BCAE : Protection des zones humides et des tourbieres BCAE 2
+
+	ZONES-A-PROSPECTER-FORETS-SUBNATURELLES : Cartographie des zones a prospecter pour l identification des forets subnaturelles
+
+	lidarhd : MNT LidarHD brut
+
+
+
+
+IGN Geoplateforme WMS vecteur stylise
+	ADMIN-EXPRESS-COG-CARTO-PE.LATEST-WMSV : Limites administratives d ADMIN EXPRESS pour un usage cartographique et/ou statistique a petite echelle (Derniere edition).
+	
+    AU.AdministrativeUnit : Unites d'administration separees par des limites administratives et delimitant les zones dans lesquelles les etats membres detiennent et/ou exercent leurs competences, aux fins de l'administration loc
+	
+    BDADRESSE-POINTADRESSE_BDD_FXX_RGF93G : BDADRESSE Point Adresse 18.2 edition 2017
+	BDADRESSE-POINTADRESSE_BDD_FXX_RGF93G_WMS_20190205 : BDADRESSE Point Adresse 18.2 edition 2017
+	BDADRESSE-ROUTESADRESSE_BDD_FXX_RGF93G : BDADRESSE Route Adresse 18.2 edition 2018
+
+	
+    CLC00R_BDD_WLD_WM_20180322 : Inventaire biophysique de l'occupation des sols en 2000 en 44 postes. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre du programme europeen d observation de la T
+	CLC06R_BDD_WLD_WM_20180322 : Inventaire biophysique de l'occupation des sols en 2006 en 44 postes pour la Metropole et 50 postes pour les DOM . CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadr
+	CLC_BDD_WLD_WM_20180228 : Inventaire biophysique de l'occupation des sols en 2012 en 44 postes pour la Metropole et 50 postes pour les DOM. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre
+	CLC_CHA00_BDD_WLD_WM_20180306 : Inventaire biophysique du changement d'occupation des sols entre 1990 et 2000 suivant la nomenclature CORINE Land Cover en 44 postes. CORINE Land Cover est une base de donnees d occupation des sols pr
+	CLC_CHA06_BDD_WLD_WM_20180314 : Inventaire biophysique du changement d'occupation des sols entre 2000 et 2006 suivant la nomenclature CORINE Land Cover en 44 postes pour la Metropole et 50 postes pour les DOM. CORINE Land Cover est 
+	CLC_CHA12_BDD_WLD_WM_20180305 : Inventaire biophysique du changement d'occupation des sols entre 2006 et 212 suivant la nomenclature CORINE Land Cover en 44 postes pour la Metropole et 50 postes pour les DOM. CORINE Land Cover est u
+	CLC_CHA12_BDD_WLD_WM_20180314 : Inventaire biophysique du changement d'occupation des sols entre 2006 et 212 suivant la nomenclature CORINE Land Cover en 44 postes pour la Metropole et 50 postes pour les DOM. CORINE Land Cover est u
+	CLC_CHA18_BDD_WLD_WM_20190425 : Inventaire biophysique du changement d'occupation des sols entre 2012 et 2018 suivant la nomenclature CORINE Land Cover en 50 postes pour les DOM et 44 postes pour la Metropole. CORINE Land Cover est 
+	CLC_CLC00R_BDD_WLD_WM_20180306 : Inventaire biophysique de l'occupation des sols en 2000 en 44 postes. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre du programme europeen d observation de la T
+	CLC_CLC00_BDD_WLD_WM_20180305 : Inventaire biophysique de l'occupation des sols en 2000 en 44 pour la Metropole et 50 postes pour les DOM. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre du pro
+	CLC_CLC06_BDD_WLD_WM_20180305 : Inventaire biophysique de l'occupation des sols en 2006 en 44 pour la Metropole et 50 postes pour les DOM. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre du pro
+	CLC_CLC12R_BDD_WLD_WM_20190925 : Inventaire biophysique de l'occupation des sols en 2012 en 50 postes pour les DOM et 44 postes pour la Metropole. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre
+	CLC_CLC18_BDD_WLD_WM_08-10-2020 : Inventaire biophysique de l'occupation des sols en 2018 en 50 postes pour les DOM et 44 postes pour la Metropole. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre
+	CLC_CLC18_BDD_WLD_WM_20190425 : Inventaire biophysique de l'occupation des sols en 2018 en 50 postes pour les DOM et 44 postes pour la Metropole. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre
+	CLC_CLC18_BDD_WLD_WM_20190731 : Inventaire biophysique de l'occupation des sols en 2018 en 50 postes pour les DOM et 44 postes pour la Metropole. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre
+	CLC__CLC12R_BDD_WLD_WM_20190425 : Inventaire biophysique de l'occupation des sols en 2012 en 50 postes pour les DOM et 44 postes pour la Metropole. CORINE Land Cover est une base de donnees d occupation des sols produite dans le cadre
+	
+	Carhab_habitat : Carhab habitat
+
+	DEPARTEMENT.2015 : Le departement est une collectivite territoriale de plein exercice. Il est administre par un conseil departemental dont les membres sont elus pour six ans sur la base du decoupage cantonal. Le departe
+	DEPARTEMENT.2017 : Le departement est une collectivite territoriale de plein exercice. Il est administre par un conseil departemental dont les membres sont elus pour six ans sur la base du decoupage cantonal. Le departe
+	EAU.ZRE : Une Zone de repartition des eaux (ZRE) est une zone comprenant des bassins, sous-bassins, systemes aquiferes ou fractions de ceux-ci caracterises par une insuffisance, autre qu'exceptionnelle, des res
+	
+    GEODESIE_DATA : Donnees geodesiques publiques en WMS
+	
+    GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25.GRAPHE-MOSAIQUAGE : Le graphe de mosaiquage du produit SCAN25 fournit le zonage utilise pour la mise a jour des donnees SCAN25 ainsi que differentes metadonnees.
+	
+    GN.GeographicalNames : Noms de zones, de regions, de localites, de grandes villes, de banlieues, de villes moyennes ou d'implantations, ou tout autre element geographique ou topographique d'interet public ou historique.
+	
+    GRAPHE.PCRS.ANCT : Graphe PCRS ANCT
+	
+    HAIES.BOCAGES : Couche nationale de reference des haies lineaires en France metropolitaine edition 2026-06-15
+	
+    HY.PhysicalWaters : elements hydrographiques, y compris les zones maritimes ainsi que toutes les autres masses d'eau et les elements qui y sont lies, y compris les bassins et sous-bassins hydrographiques. Conformes, le c
+	
+    IGNF_GEODESIE-GRAV : Reseau de points materialises dont les coordonnees, altitude et gravimetrie sont connues avec precision
+	IGNF_GEODESIE-RBF : Reseau de points materialises dont les coordonnees, altitude et gravimetrie sont connues avec precision
+	IGNF_GEODESIE-RDF : Reseau de points materialises dont les coordonnees sont connues avec precision
+	IGNF_GEODESIE-RGP : Reseau de stations permanentes permettant un acces qualifie aux donnees d'observation des constellations de satellites de positionnement (GPS, GLONASS, Galileo )
+	IGNF_GEODESIE-RN : Reseau de reperes materialises repartis en mailles le long des voies de communication et dont l'altitude est determinee avec une tres grande precision.
+	IGNF_GEODESIE-TRIPLET : Composante du reseau de nivellement constituee de groupes d au moins trois reperes faisant l objet d un entretien regulier
+	
+    IGNF_INDICATEURS-FORESTIER_DEPARTEMENTS_FLUX_2020-2024 : Estimations statistiques du bilan des flux de bois en foret, c est-a-dire la production biologique a laquelle on soustrait les prelevements et la mortalite (2020-2024)
+	IGNF_INDICATEURS-FORESTIER_DEPARTEMENTS_FLUX_DERNIERE-EDITION : Estimations statistiques du bilan des flux de bois en foret, c est-a-dire la production biologique a laquelle on soustrait les prelevements et la mortalite (Derniere edition)
+	IGNF_INDICATEURS-FORESTIER_DEPARTEMENTS_VOLUME_2020-2024 : Estimations statistiques du volume a l hectare de foret des arbres vivants (2020-2024)
+	IGNF_INDICATEURS-FORESTIER_DEPARTEMENTS_VOLUME_DERNIERE-EDITION : Estimations statistiques du volume a l hectare de foret des arbres vivants (Derniere edition)
+	IGNF_INDICATEURS-FORESTIER_REGIONS_FLUX_2020-2024 : Estimations statistiques du bilan des flux de bois en foret, c est-a-dire la production biologique a laquelle on soustrait les prelevements et la mortalite (2020-2024)
+	IGNF_INDICATEURS-FORESTIER_REGIONS_FLUX_DERNIERE-EDITION : Estimations statistiques du bilan des flux de bois en foret, c est-a-dire la production biologique a laquelle on soustrait les prelevements et la mortalite (Derniere edition)
+	IGNF_INDICATEURS-FORESTIER_REGIONS_VOLUME_2020-2024 : Estimations statistiques du volume a l hectare de foret des arbres vivants (2020-2024)
+	IGNF_INDICATEURS-FORESTIER_REGIONS_VOLUME_DERNIERE-EDITION : Estimations statistiques du volume a l hectare de foret des arbres vivants (Derniere edition)
+	IGNF_INDICATEURS-FORESTIER_SYLVOECOREGIONS_FLUX_2020-2024 : Estimations statistiques du bilan des flux de bois en foret, c est-a-dire la production biologique a laquelle on soustrait les prelevements et la mortalite (2020-2024)
+	IGNF_INDICATEURS-FORESTIER_SYLVOECOREGIONS_FLUX_DERNIERE-EDITION : Estimations statistiques du bilan des flux de bois en foret, c est-a-dire la production biologique a laquelle on soustrait les prelevements et la mortalite (Derniere edition)
+	IGNF_INDICATEURS-FORESTIER_SYLVOECOREGIONS_VOLUME_2020-2024 : Estimations statistiques du volume a l hectare de foret des arbres vivants (2020-2024)
+	IGNF_INDICATEURS-FORESTIER_SYLVOECOREGIONS_VOLUME_DERNIERE-EDITION : Estimations statistiques du volume a l hectare de foret des arbres vivants (Derniere edition)
+	
+    IGNF_SITES-UNESCO : Sites du patrimoine mondial de l'UNESCO : Le patrimoine mondial est une appellation attribuee a des lieux ou des biens, situes a travers le monde, possedant une valeur universelle exceptionnelle. A ce
+	
+    INAO-AOC_SYMBO_BDD_FXX_WM_WMS : Selon les reglements europeens n 110/2008 du 15 janvier 2008, n 1151/2012 du 21 novembre 2012 et n 1308/2013 de l OCM , le cahier des charges des appellations definit l aire geographique. Le terme de 
+	
+    INPE : Inventaire national des plans d'eau
+	
+    INSEE.FILOSOFI.POPULATION : Nombre d'individus par km2
+	
+    OCSGE_NG_USAGE_BDD_WLD_WGS84_32_2019 : ocsge gers 32 nouvelle representation NG usage 2019
+	
+
+	
+    ObsForets.Gestion.Part-foret-publique-dep : Part foret publique - departement
+	ObsForets.Ressources.Volume-moyen-ha-dep-2018-2022 : Volume moyen dans un hectare de foret du departement (Volume bois fort tige des arbres vivants)
+	ObsForets.Ressources.Volume-sur-pied-dep-2017-2021 : Volume de bois vivant par departement
+	ObsForets.Ressources.Volume-sur-pied-region-2017-2021 : Volume sur pied - region
+	ObsForets.Sols.Repartition-niveaux-trophiques-2018-2022 : Repartition des niveaux trophiques en foret
+	ObsForets.Sols.Repartition-niveaux-trophiques-toutes-campagnes : Repartition des niveaux trophiques en foret
+	
+    RPG.2022 : Registre parcellaire graphique : zones de cultures declarees par les exploitants en 2022
+
+Masses d'eau rivieres - SDAGE 2022
+
+	hedge.hedge : Couche nationale de reference des haies lineaires en France metropolitaine edition 2026-06-15
+	
+    l_rgc_l_008_gpkg_20-02-2026_wmsv : Les routes a grande circulation definies a l'article L. 110-3 du code de la route sont :a) Les routes nationales definies a l'article L. 123-1 du code de la voirie routiere et mentionnees par le decre
+    
+    parcellaire_express_batiment_noir : Parcellaire cadastral edition : 2026-03-01
+	parcellaire_express_batiment_orange : Parcellaire cadastral edition : 2026-03-01
+	parcellaire_express_numero : Parcellaire cadastral edition : 2026-03-01
+	parcellaire_express_parcelle_noir : Parcellaire cadastral edition : 2026-03-01
+	parcellaire_express_parcelle_orange : Parcellaire cadastral edition : 2026-03-01
+
+	ramsar_wms : Protection de zones humides
+
+BRGM Geologie
+	ms:SCAN_F_GEOL50_CATALOG : Tableau d'assemblage des 1 127 cartes geologiques a 1/50 000e couvre la France metropolitaine
+	ms:SCAN_F_GEOL250_CATALOG : Carte d'assemblage des cartes geologiques au 1/250 000
+	
+    ms:SCAN_H_GEOL50_PERIMETRE : BD Charm-50 est la base de donnees georeferencee des cartes geologiques a 1/50 000e vectorisees et harmonisees. Elle comprend 6 couches de donnees numeriques vecteurs : formations geologiques, contour
+	ms:SCAN_H_RELIEF_GEOL50_PERIMETRE : BD Charm-50 est la base de donnees georeferencee des cartes geologiques a 1/50 000e vectorisees et harmonisees. Elle comprend 6 couches de donnees numeriques vecteurs : formations geologiques, contour
+	
+    ms:BSS_SEMIS_2 : BSS recense les fiches signaletiques de l'ensemble des ouvrages de la BSS (pres de 700.000 ouvrages decrits, associes a plus de 2.000.000 de pages de documents techniques).
+	ms:BSS_SEMIS_1 : BSS recense les fiches signaletiques de l'ensemble des ouvrages de la BSS (pres de 700.000 ouvrages decrits, associes a plus de 2.000.000 de pages de documents techniques).
+	ms:BSS_SEMIS_0 : BSS recense les fiches signaletiques de l'ensemble des ouvrages de la BSS (pres de 700.000 ouvrages decrits, associes a plus de 2.000.000 de pages de documents techniques).
+	
+    ms:BSS_TOTAL_SANS_LABEL : BSS recense les fiches signaletiques de l'ensemble des ouvrages de la BSS (pres de 700.000 ouvrages decrits, associes a plus de 2.000.000 de pages de documents techniques)
+	ms:BSS_TOTAL_AVEC_LABEL : BSS recense les fiches signaletiques de l'ensemble des ouvrages de la BSS (pres de 700.000 ouvrages decrits, associes a plus de 2.000.000 de pages de documents techniques)
+	
+    ms:BSS_EAU_DENSITE : BSS Eau est la base de donnees relative aux donnees sur les eaux souterraines (donnees sur la qualite des eaux souterraines, niveaux d eau, prelevements, etc). Cette couche diffuse des informations sp
+	
+    ms:BSS_EAU_POINT_EXP : BSS Eau est la base de donnees relative aux donnees sur les eaux souterraines (donnees sur la qualite des eaux souterraines, niveaux d'eau, prelevements, etc). Cette couche diffuse des informations sp
+	ms:BSS_EAU_POINT : BSS Eau est la base de donnees relative aux donnees sur les eaux souterraines (donnees sur la qualite des eaux souterraines, niveaux d'eau, prelevements, etc). Cette couche diffuse des informations sp
+	
+    ms:POMPAGE_ESSAI_INTERRO : BSS Eau est la base de donnees relative aux donnees sur les eaux souterraines (donnees sur la qualite des eaux souterraines, niveaux d eau, prelevements, etc). Cette couche diffuse des informations sp
+	
+    ms:BSS_EAU_QT_DENSITE : BSS Eau est la base de donnees relative aux donnees sur les eaux souterraines (donnees sur la qualite des eaux souterraines, niveaux d'eau, prelevements, etc). Cette couche diffuse des informations sp
+	ms:BSS_EAU_QT_POINT : BSS Eau est la base de donnees relative aux donnees sur les eaux souterraines (donnees sur la qualite des eaux souterraines, niveaux d'eau, prelevements, etc). Cette couche diffuse des informations sp
+	
+    ms:GRAVI_BASE_SEMI : Les bases gravimetriques recensent la description des bases de reference qui constituent le reseau gravimetrique de la France
+	ms:GRAVI_BASE_POINT : Les bases gravimetriques recensent la description des bases de reference qui constituent le reseau gravimetrique de la France
+	
+    ms:AEROMAG_CAMPAGNE : La base de donnees campagnes recense l'emprise et les caracteristiques des campagnes aeromagnetiques repertoriees en France metropolitaine.
+	
+    ms:BGM_STATION : Les activites de la Banque de Geologie Marine (BGM) repondent a la mission d'inventaire des donnees concernant la nature du sous-sol national, confiee au BRGM au titre du Code Minier et etendue au dom
+	
+    ms:BGM_TYPE : Les activites de la Banque de Geologie Marine (BGM) repondent a la mission d'inventaire des donnees concernant la nature du sous-sol national, confiee au BRGM au titre du Code Minier et etendue au dom
+	
+    ms:GITES_EMP : Gisements, gtes, indices - Emprise
+	ms:GITES_PT : Gisements, gtes, indices - Points
+	
+    ms:MINES_EMP : Mines Substances principales - Emprise
+	ms:MINES_PT : Mines Substances principales - Points
+
+
+BRGM Risques naturels
+	ms:ALEARG_REALISE : Cette base de donnees represente la cartographie departementale de l'exposition au retrait gonflement dus aux sous-sols argileux.
+	ms:NEOPAL_FAILLE : Neopal est la base de donnees recensant les arguments geologiques de deformation plus recentes que deux millions d'annees (indices neotectoniques) en France, publies dans la litterature scientifique e
+	ms:NEOPAL_VALIDE : Neopal est la base de donnees recensant les arguments geologiques de deformation plus recentes que deux millions d'annees (indices neotectoniques) en France, publies dans la litterature scientifique e
+	ms:NEOPAL_NON_VALIDE : Neopal est la base de donnees recensant les arguments geologiques de deformation plus recentes que deux millions d'annees (indices neotectoniques) en France, publies dans la litterature scientifique e
+	ms:CAVITE_LOCALISEE : BD cavites est la base de donnees nationale des cavites souterraines abandonnees en France metropolitaine (ouvrages souterrains d'origine anthropique - a l'exclusion des mines - et cavites naturelles)
+	ms:CAVITE_COMMUNE : BD cavites est la base de donnees nationale des cavites souterraines abandonnees en France metropolitaine (ouvrages souterrains d'origine anthropique - a l'exclusion des mines - et cavites naturelles)
+	ms:MVT_LOCALISE : La base BDMVT recense les phenomenes averes de types glissements de terrain, eboulements, effondrements, coulees de boue et erosions de berges sur le territoire francais (metropole et DOM) dans le cad
+	ms:MVT_COMMUNE : La base BDMVT recense les phenomenes averes de types glissements de terrain, eboulements, effondrements, coulees de boue et erosions de berges sur le territoire francais (metropole et DOM) dans le cad
+	ms:SIS_METROPOLE : Base de donnees nationale des seismes en France metropolitaine. Cette base de donnees a ete completee des bases de donnees SisAntilles et SisReunion.
+	ms:SIS_INTENSITE : Il s'agit d'une base de donnees recensant les intensites observees ou interpolees pour l'ensemble des seismes de la base de donnees SisFrance des intensites macrosismiques historiques. Les intensites 

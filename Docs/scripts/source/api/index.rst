@@ -7,3 +7,8 @@ API reference
    common
    service_discovery
    ui
+   threads
+   terminal
+   mapviewer
+   dictview
+   node
