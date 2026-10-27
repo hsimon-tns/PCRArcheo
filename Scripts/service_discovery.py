@@ -17,24 +17,13 @@ import requests
 from owslib.wfs import WebFeatureService
 from owslib.wms import WebMapService
 
-def subDirs(dir: str):
-    sys.path.append(dir)
-    for path in os.listdir(dir):
-        if os.path.isdir(path):
-            sys.path.append(path)
-            subDirs(path)
-
-def setRoot(dir: str):
-    os.chdir(dir)
-    subDirs(dir)
-
-PROJECT_PATH = os.path.abspath(__file__+"/../..")
-print(f"PROJECT_PATH = {PROJECT_PATH}")
-setRoot(PROJECT_PATH)
+PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_PATH not in sys.path:
+    sys.path.insert(0, PROJECT_PATH)   # pour « from common import utils » ; pas de os.chdir : chemins absolus
 
 from common import utils
 
-filters = utils.loadJson("data/discovery_filters.json")
+filters = utils.loadJson(os.path.join(PROJECT_PATH, "data", "discovery_filters.json"))
 includeKeywords = filters.get("include", {}).get("keywords", [])
 excludeKeywords = filters.get("exclude", {}).get("keywords", [])
 
@@ -194,7 +183,7 @@ def _discover_wms(server: dict, timeout: int, verbose: bool) -> ServerResult:
 
 def discover_all(timeout: int = 30, only_relevant: bool = False, verbose: bool = False) -> dict:
     results = []
-    servers = utils.loadJson(PROJECT_PATH+"/data/servers.json")
+    servers = utils.loadJson(os.path.join(PROJECT_PATH, "data", "servers.json"))
     for server in servers:
         if verbose:
             print(f"\n{'─'*60}\n  {server['provider']} — {server['name']}\n{'─'*60}")

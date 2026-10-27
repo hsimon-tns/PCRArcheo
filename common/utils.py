@@ -6,7 +6,6 @@ import requests
 import xmltodict
 from enum import StrEnum
 from typing import Optional
-from owslib.etree import etree
 from shapely.geometry import shape, Point as ShapelyPoint
 
 def loadJson(path):
@@ -18,7 +17,7 @@ def loadJson(path):
     """
 
     try:
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:   # sans cela : encodage système (cp1252 sous Windows), accents corrompus
             data = json.load(f)
             return data
     except FileNotFoundError as e:
@@ -148,7 +147,6 @@ class WFSREquest(StrEnum):
 TIMEOUT     = 20
 RETRY_DELAY = 2
 MAX_RETRIES = 3
-BBOX_DEG    = 0.05   # rayon par défaut en degrés (~5km) pour intersection_bbox
 
 def splitProjection(p: str) -> str:
     """Get the OGC projection format from the capabilities projection format
@@ -165,9 +163,6 @@ def splitProjection(p: str) -> str:
     else:
         return ""
 
-
-def feat_coords(feat: dict) -> tuple:
-    return feat.get("geometry", {}).get("coordinates", [])
 
 def send_request(url: str, params: dict) -> dict:
     """Send a OGC request
@@ -216,18 +211,6 @@ def send_request(url: str, params: dict) -> dict:
         return j
     return None
 
-def _has_features(data) -> bool:
-    """True si *data* est bien du GeoJSON (a une cle "features"), False sinon.
-
-    BRGM (MapServer) refuse OUTPUTFORMAT=json pour certaines couches ; apres
-    repli sur son format par defaut, send_request renvoie alors un dict GML
-    (xmltodict, ex. cle "wfs:FeatureCollection") que ce module ne sait pas
-    convertir en features exploitables. Sans ce garde-fou, `data.get("features", [])`
-    y renverrait silencieusement une liste vide, indiscernable d'un vrai
-    "0 resultat dans la zone" (verifie en prod sur ms:MVT_LOCALISE).
-    """
-    return isinstance(data, dict) and "features" in data
-
 
 def getXMLasJSON(url: str, params: dict) -> Optional[dict]:
     """GET XML->dict avec retry ; les echecs sont journalises sur stdout."""
@@ -244,7 +227,7 @@ def getXMLasJSON(url: str, params: dict) -> Optional[dict]:
     return None
 
 # ---------------------------------------------------------------------------
-# Calcul de distance
+# Géométrie
 # ---------------------------------------------------------------------------
 
 def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
@@ -256,77 +239,6 @@ def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
     a = math.sin(dphi/2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlam/2)**2
     return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-def closest_point_distance(lon: float, lat: float, feature: dict) -> float:
-    """
-    Distance minimale entre (lon, lat) et tous les points d'une géométrie GeoJSON.
-    Fonctionne pour Point, LineString, MultiLineString, Polygon, MultiPolygon.
-    """
-    geom  = feature.get("geometry", {})
-
-    gtype = geom.get("type", "")
-    coords = geom.get("coordinates", [])
-
-    def flatten(c, depth=0):
-        """Aplatit récursivement les coordonnées en liste de [lon, lat]."""
-        if not c:
-            return []
-        if isinstance(c[0], (int, float)):
-            return [c]
-        return [pt for sub in c for pt in flatten(sub, depth + 1)]
-
-    points = flatten(coords)
-    if not points:
-        return float("inf")
-    return min(haversine_km(lon, lat, pt[0], pt[1]) for pt in points)
-
-# ---------------------------------------------------------------------------
-# Construction des paramètres WFS depuis une couche de couches_selection.json
-# ---------------------------------------------------------------------------
-
-def build_wfs_params(
-    layer: dict,
-    lon: float,
-    lat: float,
-    bbox_deg: float = BBOX_DEG,
-    count: int = 10,
-) -> dict:
-    """
-    Construit le dict de paramètres WFS à partir d'une entrée couches_selection.
-
-    Paramètres WFS utilisés :
-        SERVICE      → toujours "WFS"
-        VERSION      → toujours "2.0.0"
-        REQUEST      → toujours "GetFeature"
-        TYPENAMES    → layer["couche_nom"]   (nom de la couche)
-        SRSNAME      → "EPSG:4326"           (projection de la réponse)
-        OUTPUTFORMAT → "application/json"
-        BBOX         → calculé depuis lon/lat du site + bbox_deg
-        PROPERTYNAME → layer["champs_cibles"] (colonnes à récupérer)
-        COUNT        → nombre max de résultats
-    """
-    # BBOX format WFS 2.0 : minLat,minLon,maxLat,maxLon,CRS. La forme courte
-    # "EPSG:4326" est lue lon,lat par l'IGN (GeoServer) mais lat,lon par le
-    # BRGM (MapServer) : avec l'ordre ci-dessus, l'IGN renvoie 0 entite. La
-    # forme URN est sans ambiguite et acceptee par les deux (verifie en prod).
-    bbox = f"{lat-bbox_deg},{lon-bbox_deg},{lat+bbox_deg},{lon+bbox_deg},urn:ogc:def:crs:EPSG::4326"
-
-    params = {
-        "SERVICE":      "WFS",
-        "VERSION":      "2.0.0",
-        "REQUEST":      "GetFeature",
-        "TYPENAMES":    layer["couche_nom"],
-        "SRSNAME":      "EPSG:4326",
-        "OUTPUTFORMAT": "application/json",
-        "BBOX":         bbox,
-        "COUNT":        str(count),
-    }
-
-    # PROPERTYNAME est volontairement absent : le demander fait que le serveur
-    # renvoie les attributs SANS la geometrie, or les trois strategies de
-    # requete (point-in-polygon, distance, comptage) ont toutes besoin de la
-    # geometrie de chaque feature en plus de ses attributs (verifie en prod).
-
-    return params
 
 def find_containing_feature(features: list, lon: float, lat: float) -> list:
     """
@@ -405,151 +317,3 @@ def find_containing_feature(features: list, lon: float, lat: float) -> list:
     # Aucun polygone ne contient exactement le point
     # → fallback : centroïde le plus proche parmi les survivants des niveaux 1 et 2
     return ret
-
-# ---------------------------------------------------------------------------
-# Les trois types de requête
-# ---------------------------------------------------------------------------
-
-def query_intersection_point(
-    layer: dict,
-    lon: float,
-    lat: float,
-) -> dict:
-    """
-    Récupère la valeur de la couche au point (ou dans un rayon immédiat).
-    Retourne les champs_cibles de la feature la plus proche.
-    Usage : type de sol, lithologie, aléa argile...
-    """
-    covariable = layer["covariable_cible"]
-    champs     = layer.get("champs_cibles", [])
-    empty      = {covariable: None}, None
-
-    params = build_wfs_params(layer, lon, lat, bbox_deg=0.01, count=5)
-    data   = send_request(layer["url"], params)
-    if not _has_features(data):
-        print("\tData was empty...")
-        return empty
-    print(f"\tReturned features : {data["numberReturned"]}")
-
-    features = data.get("features", [])
-    if not features:
-        print("\tAugmentation du rayon de recherche")
-        # Élargir le rayon si rien trouvé
-        params = build_wfs_params(layer, lon, lat, bbox_deg=0.05, count=5)
-        data   = send_request(layer["url"], params)
-        if not _has_features(data):
-            print("\tData was empty...")
-            return empty
-        features = data.get("features", [])
-
-    if not features:
-        print("\tToujours pas de donnees")
-        return empty
-
-    print(f"\nData ok ! ({len(features)} features)")
-    print("\nTraitement des features...")
-    # Feature contenant le point (pipeline bbox/rayon/Shapely), sinon la plus proche
-    contained = find_containing_feature(features, lon, lat)
-    if contained:
-        best = contained[0]
-    else:
-        best = min(features, key=lambda f: closest_point_distance(lon, lat, f))
-    props = best.get("properties", {})
-    coords = feat_coords(best)
-
-    # Si un seul champ cible → valeur directe
-    # Si plusieurs → dict préfixé par covariable
-    if len(champs) == 1:
-        return {covariable: props.get(champs[0])}, coords
-    elif champs:
-        return {f"{covariable}__{c}": props.get(c) for c in champs}, coords
-    else:
-        # Aucun champ spécifié → retourner toutes les propriétés
-        return {f"{covariable}__{k}": v for k, v in props.items()}, coords
-
-def query_intersection_bbox(
-    layer: dict,
-    lon: float,
-    lat: float,
-) -> dict:
-    """
-    Trouve la feature la plus proche dans un rayon et calcule la distance.
-    Retourne : distance en km + valeurs des champs_cibles.
-    Usage : cours d'eau, tronçons hydrographiques...
-    """
-    covariable = layer["covariable_cible"]
-    champs     = layer.get("champs_cibles", [])
-    empty_values = {covariable: None}
-    for c in champs:
-        empty_values[f"{covariable}__{c}"] = None
-    empty = empty_values, None
-
-    params = build_wfs_params(layer, lon, lat, bbox_deg=BBOX_DEG, count=10)
-    data   = send_request(layer["url"], params)
-    if not _has_features(data):
-        return empty
-
-    features = data.get("features", [])
-    if not features:
-        # Élargir à ~10km
-        params = build_wfs_params(layer, lon, lat, bbox_deg=0.1, count=10)
-        data   = send_request(layer["url"], params)
-        if not _has_features(data):
-            return empty
-        features = data.get("features", [])
-
-    if not features:
-        return empty
-
-    # Trouver la feature la plus proche
-    best_dist = float("inf")
-    best_feat = None
-    best_coord = []
-    for feat in features:
-        d = closest_point_distance(lon, lat, feat)
-        if d < best_dist:
-            best_dist = d
-            best_feat = feat
-            best_coord = feat_coords(feat)
-
-    if best_feat is None:
-        return empty
-
-    props  = best_feat.get("properties", {})
-    result = {covariable: round(best_dist, 4)}
-    for c in champs:
-        result[f"{covariable}__{c}"] = props.get(c)
-
-    return result, best_coord
-
-def query_count_radius(
-    layer: dict,
-    lon: float,
-    lat: float,
-) -> dict:
-    """
-    Compte le nombre de features dans un rayon donné.
-    Usage : mouvements de terrain, cavités...
-    """
-    covariable = layer["covariable_cible"]
-    rayon_m    = layer.get("rayon_m", 5000)
-    rayon_deg  = rayon_m / 111_000  # approximation : 1° ≈ 111km
-
-    params = build_wfs_params(layer, lon, lat, bbox_deg=rayon_deg, count=1000)
-    # Retirer PROPERTYNAME pour le comptage (on veut juste le nombre)
-    params.pop("PROPERTYNAME", None)
-
-    data = send_request(layer["url"], params)
-    if not _has_features(data):
-        return {covariable: None}, None
-
-    features = data.get("features", [])
-
-    # Filtrer ceux réellement dans le rayon (la BBOX est un carré, pas un cercle)
-    rayon_km = rayon_m / 1000
-    dans_rayon = [
-        f for f in features
-        if closest_point_distance(lon, lat, f) <= rayon_km
-    ]
-
-    return {covariable: len(dans_rayon)}, []

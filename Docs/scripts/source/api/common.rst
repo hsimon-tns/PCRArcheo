@@ -1,8 +1,8 @@
 common.utils
 ============
 
-WFS querying helpers and the geospatial point/layer crossing strategies
-used to enrich a coordinate with data from external OGC services.
+Shared core: JSON loading, HTTP requests to OGC services with retries
+(``send_request``), and the point-in-polygon search used by the desktop app.
 
 .. automodule:: common.utils
    :members:

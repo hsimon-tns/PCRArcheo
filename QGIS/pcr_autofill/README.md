@@ -7,16 +7,30 @@ l'IGN et du BRGM, **au moment où l'on crée un élément** — ou à la demande
 Testé avec QGIS 3.44 (Windows). Ne dépend d'aucun paquet Python à installer : réseau, géométrie et
 lecture GeoJSON/GML utilisent QGIS et GDAL.
 
-## Installation (développement)
+## Installation
 
-Un lien de répertoire évite de copier à chaque modification (pas besoin d'être administrateur) :
+**Pour l'utiliser (depuis un ZIP).** Depuis la racine du dépôt, créez le ZIP :
 
 ```bat
-mklink /J "%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins\pcr_autofill" "D:\DEV\Archeo\QGIS\pcr_autofill"
+python tools/build_plugin_zip.py
 ```
 
-Puis dans QGIS : *Extensions > Installer/Gérer les extensions > Installées > PCR Autofill*. Avec
+Il est créé dans `dist/pcr_autofill-<version>.zip`. Dans QGIS : *Extensions > Installer/Gérer les
+extensions > Installer depuis un ZIP*, choisissez ce fichier, puis vérifiez que *PCR Autofill* est coché
+dans l'onglet *Installées*. Pour mettre à jour : refaites la même opération avec le nouveau ZIP.
+
+**Pour le modifier (lien vers le dépôt).** Un lien de répertoire évite de recopier le code à chaque
+modification (pas besoin d'être administrateur). Remplacez `<dépôt>` par le chemin du dépôt :
+
+```bat
+mklink /J "%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins\pcr_autofill" "<dépôt>\QGIS\pcr_autofill"
+```
+
+Si un dossier `pcr_autofill` existe déjà à cet endroit (installation par ZIP), supprimez-le d'abord, sans
+quoi il y aurait deux exemplaires du plugin et QGIS chargerait celui qui n'est plus à jour. Avec
 *Plugin Reloader*, une modification du code se recharge sans redémarrer QGIS.
+
+## Barre d'outils
 
 L'extension ajoute une barre d'outils **PCR Autofill** (et un menu *Extensions > PCR Autofill*) :
 
@@ -125,18 +139,23 @@ Vérifié sur les serveurs réels de l'IGN et du BRGM :
 
 ## Tests
 
+Les tests s'exécutent avec le Python **fourni par QGIS** (c'est lui qui contient `qgis.core` et GDAL), depuis
+le dossier `QGIS` du dépôt. `<QGIS>` désigne le dossier d'installation de QGIS (par exemple
+`C:\Program Files\QGIS 3.44.11`) ; le lanceur s'appelle `python-qgis-ltr.bat` pour une version LTR et
+`python-qgis.bat` sinon.
+
 Sans réseau (QGIS en mode headless, faux serveur WFS) :
 
 ```bat
-cd D:\DEV\Archeo\QGIS
-"C:\Program Files\QGIS 3.44.11\bin\python-qgis-ltr.bat" -m unittest discover -s pcr_autofill/tests -t .
+cd <dépôt>\QGIS
+"<QGIS>\bin\python-qgis-ltr.bat" -m unittest discover -s pcr_autofill/tests -t .
 ```
 
 Contre les vrais serveurs IGN/BRGM (à utiliser avec parcimonie) :
 
 ```bat
 set PCR_LIVE=1
-"C:\Program Files\QGIS 3.44.11\bin\python-qgis-ltr.bat" -m unittest pcr_autofill.tests.test_live -v
+"<QGIS>\bin\python-qgis-ltr.bat" -m unittest pcr_autofill.tests.test_live -v
 ```
 
 ## Organisation

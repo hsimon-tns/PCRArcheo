@@ -25,31 +25,19 @@ from terminal import Terminal
 from mapviewer import MapViewer
 from dictview import DictionaryTreeWidget
 
-def subDirs(dir: str):
-    sys.path.append(dir)
-    for path in os.listdir(dir):
-        if os.path.isdir(path):
-            sys.path.append(path)
-            subDirs(path)
-
-def setRoot(dir: str):
-    os.chdir(dir)
-    subDirs(dir)
-
-global PROJECT_PATH
 if getattr(sys, "frozen", False):
-    # PyInstaller extraction dir (bundled datas/ live here) instead of a
-    # __file__-relative path, which points into the frozen bundle's own
-    # internals rather than the original project layout.
+    # Exécutable PyInstaller : les fichiers de data/ sont extraits dans sys._MEIPASS ;
+    # __file__ pointerait à l'intérieur du bundle, pas vers l'arborescence du projet.
     PROJECT_PATH = sys._MEIPASS
 else:
-    PROJECT_PATH = os.path.abspath(__file__+"/../..")
-setRoot(PROJECT_PATH)
+    PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_PATH not in sys.path:
+    sys.path.insert(0, PROJECT_PATH)   # pour « import common.utils » ; pas de os.chdir : chemins absolus
 
 import common.utils as utils
 from spinner import WaitingSpinner
 
-CAPA_PATH = "data/capa_selection.json"
+CAPA_PATH = os.path.join(PROJECT_PATH, "data", "capa_selection.json")
 PARAMS = {
     "SERVICE":      "WFS",
     "VERSION":      "2.0.0",
@@ -125,7 +113,7 @@ class CapaSelector(QWidget):
 
         # Load Data
 
-        with open(CAPA_PATH, "r") as f:
+        with open(CAPA_PATH, "r", encoding="utf-8") as f:
             self.data = json.load(f)
 
         self.currentLayer = {}

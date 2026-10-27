@@ -2,7 +2,7 @@
 
 Everything here is safe to run in a worker thread : no layer, project or GUI access.
 
-Choices that differ from env_collector.py, all verified against the live IGN and BRGM servers :
+Design choices, all verified against the live IGN and BRGM servers :
 
 * BBOX is sent as ``minLat,minLon,maxLat,maxLon,urn:ogc:def:crs:EPSG::4326``. The short form
   ``...,EPSG:4326`` is read as lon/lat by IGN (GeoServer) but as lat/lon by BRGM (MapServer); the

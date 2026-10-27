@@ -1,7 +1,0 @@
-PySide6
-requests
-xmltodict
-shapely
-sphinx
-pydoc
-qgmap

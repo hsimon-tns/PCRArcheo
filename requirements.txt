@@ -1,0 +1,14 @@
+# Dépendances d'exécution de l'appli bureau (UI/) et de Scripts/service_discovery.py.
+#
+# - Python >= 3.12 requis (syntaxe utilisée dans common/utils.py).
+# - Testé avec Python 3.14.3 et les versions indiquées en commentaire.
+# - Le plugin QGIS (QGIS/pcr_autofill) n'a besoin d'AUCUN de ces paquets :
+#   il s'appuie sur ceux fournis par QGIS.
+
+PySide6      # 6.11.2
+qgmap        # 1.1.0  (carte Leaflet ; ce paquet installe aussi pytest, c'est sa déclaration)
+numpy        # 2.4.6
+requests     # 2.34.2
+xmltodict    # 1.0.4
+shapely      # 2.1.2
+owslib       # 0.36.0

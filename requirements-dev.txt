@@ -1,0 +1,6 @@
+# Outils de développement : fabrication de l'exécutable et de la documentation.
+-r requirements.txt
+
+pyinstaller  # 6.22.2 : exécutable Windows (archeo.spec)
+sphinx       # 9.1.0  : documentation (Docs/scripts)
+myst-parser  # 5.1.0  : extension Sphinx utilisée par Docs/scripts/source/conf.py

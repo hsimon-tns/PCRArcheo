@@ -1,6 +1,6 @@
 """Covariate definitions (couches_selection.json) and the attribute columns they produce.
 
-Column naming follows the convention of env_collector.py :
+Column naming convention :
 
     intersection_point   1 target field  -> <covariable_cible>
                          n target fields -> <covariable_cible>__<field>  (one per field)

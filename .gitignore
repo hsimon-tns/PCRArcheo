@@ -17,3 +17,9 @@ Docs/scripts/build/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Claude
+.claude
+
+# Logs
+*.log
