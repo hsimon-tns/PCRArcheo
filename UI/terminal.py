@@ -71,6 +71,9 @@ class Terminal(QWidget):
 
         self.setupInput()
 
+        #TODO: Remove this, it's debug code
+        self.lastClearEvent = None
+
     def appendRaw(self, text: str):
         """Insere du texte brut en fin de zone, sans le saut de paragraphe
         que QTextEdit.append() force a chaque appel : stdout ecrit le
@@ -104,15 +107,19 @@ class Terminal(QWidget):
                 else:
                     self.inputTerm.setText(text)
                 event.accept()
-            elif keyEvent.modifiers() | Qt.KeyboardModifier.ControlModifier:
+            elif keyEvent.modifiers() & Qt.KeyboardModifier.ControlModifier:
                 if key == Qt.Key.Key_L:
+                    self.lastClearEvent = keyEvent
                     self.textZone.clear()
 
         return super().eventFilter(obj,event)
 
     def showHelp(self):
         print(
-            "Console Python interactive.\n"
+            "Interactive terminal.\n"
+            "Variables : \n"
+            "\tself (this terminal widget) \n"
+            "\tutils (this terminal widget) \n"
             "Variables disponibles : self (widget Terminal), utils, requests, threads.\n"
             "Les variables definies persistent d'une commande a l'autre."
         )

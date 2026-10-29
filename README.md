@@ -35,7 +35,10 @@ pip install -r requirements.txt
 python UI/mainwindow.py
 ```
 
-Depuis n'importe quel répertoire. À gauche le choix du serveur, de la couche, de la
+L'application standalone peut être lancée depuis n'importe quel répertoire.
+Il s'agit d'une interface d'exploration des données disponibles sur les différents serveurs de données Géoréférencées.
+
+À gauche le choix du serveur, de la couche, de la
 projection, coordonnées, taille de la zone et carte ; à droite : la réponse en arbre et une console Python
 executée dans le contexte de l'appli (taper `help()`). Les serveurs proposés viennent de
 `data/capa_selection.json`. L'interface n'a pas de tests automatiques ; le noyau `common/` en a (voir
